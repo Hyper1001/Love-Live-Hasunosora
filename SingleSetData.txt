@@ -1,0 +1,5 @@
+Series: Love Live! Hasunosora Girls' High School Idol Club
+
+Folder: Love Live Hasunosora/W122
+Prefix: LHS/W122
+SetName: Love Live! Hasunosora Girls' High School Idol Club feat Link！Like！Love Live！

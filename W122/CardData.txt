@@ -1,0 +1,893 @@
+Character: LHS/W122-001
+Name Dream Believers, Kozue Otomune
+Color Y
+Level 0
+Cost 0
+Power 1000
+Trait1 Music
+Trait2 Cerise Bouquet
+Auto: OnTriggerCheck
+{
+	IfOther IsClimax
+	{
+		*GiveCharacterPower(1500,Any)
+	}
+}
+Text Auto: When your character's Trigger Check reveals a CX, choose 1 of your <Music> characters, this turn, it gets +1500 power.
+Act: 1 RestSelf
+{
+	Brainstorm 4
+	If Compare BrainstormedClimax 1 OrMore
+	{
+		SetXValue BrainstormedClimax
+		SearchLocationForTargets WaitingRoom 0 X IsCharacter
+		RevealTargets
+		MoveCards Hand
+	}
+	TargetBrainstormed
+	NarrowTargets NameEquals Dream Believers, Kozue Otomune
+	If HasTarget
+	{
+		SearchLocationForTargets WaitingRoom 0 1 NameEquals Dream Believers, Kozue Otomune
+		MoveCard BottomOfStock
+	}
+}
+Text Act: BRAINSTORM [(1) Rest this] Flip over the top 4 cards of your deck, then send them to Waiting Room. For each Climax among them, choose up to 1 character from your Waiting Room, and add it to hand. If you sent a "Dream Believers, Kozue Otomune" to Waiting Room by this effect, choose up to 1 "Dream Believers, Kozue Otomune" in your Waiting Room, and send it to the bottom of your Stock.
+EndCard
+
+Character: LHS/W122-002
+Name Dream Believers, Ginko Momose
+Color Y
+Level 1
+Cost 0
+Power 4500
+Trait1 Music
+Trait2 Cerise Bouquet
+Cont: GiveSelf
+{
+	If StageContains 2 Other && HasTrait Music
+	{
+		GainPower 1000
+	}
+}
+Text Cont: If you have 2 or more other <Music> characters, this gets +1000 power.
+Auto: OnPlay
+{
+	Peek Deck 3
+	AIChoice AddToHand
+	Message Choose a climax to add to your hand.
+	ChooseCardsFromTargets 0 1 IsClimax
+	SetXValue TargetCount
+	RevealTargets
+	MoveCard Hand
+	PutTheRestIntoTheWaitingRoom
+	If Compare X 1 OrMore
+	{
+		Discard 1 Any
+	}
+}
+Text Auto: When this is placed on stage from hand, look at up to 3 cards from the top of your deck, choose up to 1 CX from among them, add it to hand, and send the rest to Waiting Room. If you added a card to hand, discard 1 card.
+EndCard
+
+Character: LHS/W122-003
+Name Dream Believers, Kaho Hinoshita
+Color Y
+Level 3
+Cost 2
+Power 9000
+Soul 2
+Trigger Soul
+Trait1 Music
+Trait2 Cerise Bouquet
+Combo Suisai Sekai
+Auto: OnPlay
+{
+	*OptionalHeal
+	TargetSelf
+	GainPower 1500
+}
+Text Auto: When this is placed on stage from hand or by the ACT effect of {Unknown Kaho}, heal up to 1, then this turn, this gets +1500 power.
+Auto: OnAttack
+{
+	If Climax Suisai Sekai
+		{
+			MultipleChoiceQuestion Choose an effect:\n1. Your opponent puts all cards in their stock into their waiting room, and puts the same number of cards from the top of their deck into their stock. \n2. At the end of this card's attack, choose up to 1 Reversed character across from this, send it to Clock. \n3. [Discard 2 cards] You may pay cost. If you do, deal 4 damage to your opponent.|1|2|3
+			If Answer 0
+				{
+					StockSwap
+				}
+			If Answer 1
+				{
+					GainEffect
+					{
+						Auto: OnReverseOpponent
+						{
+							If Climax KahoCX
+							{
+								TargetBattleOpponent
+								IfThatCard OnStage
+								{
+									Question Put the battle opponent into the opponent's clock?
+									If Yes
+									{
+										TargetBattleOpponent
+										MoveCard OpponentClock
+									}
+								}
+							}
+						}
+					}
+				}
+			If Answer 2
+				{
+					PayCost Discard 2 Any
+						{
+							Burn 4
+						}
+				}
+		}
+}
+Text Auto: CxCombo When this card attacks, if "Suisai Sekai" is in your climax area, choose 1 of the following effects, and perform it. \n"Your opponent puts all cards in their stock into their waiting room, and puts the same number of cards from the top of their deck into their stock." \n"At the end of this card's attack, choose up to 1 Reversed character across from this, send it to Clock." \n"[Discard 2 cards] You may pay cost. If you do, deal 4 damage to your opponent."
+EndCard
+
+Character: LHS/W122-004
+Name Dream Believers, Hime Anyoji
+Color Y
+Level 3
+Cost 2
+Soul 2
+Trigger Soul
+Power 10500
+Trait1 Music
+Trait2 Mira-Cra Park
+Auto: OnAttack
+{
+	PayCost 3 Discard 1 Any
+	{
+		MillOpponentBottom 6
+		NarrowTargets IsClimax
+		Repeat TargetCount
+		{
+				Burn 1
+		}
+	}
+}
+Text Auto:  [(3) Discard 1 card] When this attacks, you may pay cost. If you do, send the bottom 6 cards of your opponent's deck to Waiting Room, then deal 1 damage to your opponent X times. X equals the number of CXes sent to Waiting Room by this effect.
+EndCard
+
+Character: LHS/W122-009
+Name Megumi Fujishima Bouncer
+Color Y
+Level 2
+Cost 2
+Soul 2
+Trigger Soul
+Power 6500
+Trait1 Music
+Trait2 Mira-Cra Park
+Cont: GiveSelf
+{
+	If MyTurn
+	{
+		*GainPowerForEachOther(1000,Music)
+	}
+}
+Text Cont: During your turn, for each of your other <Music> character, this gets +1000 power.
+*HandEncore
+Act: SendSelf Stock
+{
+	TargetLocation OpponentStage
+	ChooseCharacterFromTargets Choose a character to return to hand.
+	Bounce
+}
+Text Act: [Send this to Stock] Choose 1 of your opponent's characters, return it to hand.
+EndCard
+
+Character: LHS/W122-010
+Name Kozue Otomune FreePlay
+Color Y
+Level 3
+Cost 2
+Soul 2
+Trigger Soul
+Power 4500
+Trait1 Music
+Trait2 Cerise Bouquet
+Cont: GiveAll
+{
+	If NameEquals Dream Believers, Kaho Hinoshita
+	{
+		GainPower 500
+		GainEffect
+		{
+			*HexProof
+		}
+	}
+}
+Text Cont: All of your other "Dream Believers, Kaho Hinoshita" gets +500 power and the following ability, "CONT - This cannot be targeted by your opponent's effects."
+*2000Assist
+Auto: OnPlay
+{
+	SearchLocationForTargets Hand 0 1 IsCharacter && Compare ThatCardsLevel MyLevel OrLower
+	PlaceOnStage False True True False
+	GainPower 2000
+}
+Text Auto: When this is placed on stage from hand or by the ACT effect of {Unknown Kozue}, choose up to 1 character from your hand whose Level is equal or lower than your Level, place it on stage in any slot, and this turn, it gets +2000 power.
+EndCard
+
+Character: LHS/W122-011
+Name Ginko Momose StockHeal
+Color Y
+Level 3
+Cost 2
+Soul 2
+Trigger Soul
+Power 9000
+Trait1 Music
+Trait2 Cerise Bouquet
+*EarlyPlay2OrLessClimax
+Cont: GiveSelf
+{
+	TargetLocation Backstage
+	NarrowTargets Other && HasTrait Music
+	SetXValue TargetCount
+	MultiplyXValue 1000
+	GainPower X
+}
+Text Cont: This card gets +1000 power for each other 《Music》 character in your back stage.
+*StockHealer
+EndCard
+
+Character: LHS/W122-023
+Name Murozaki Lattice, Kozue Otomune
+Color Y
+Level 0
+Cost 0
+Power 2500
+Trait1 Music
+Trait2 Cerise Bouquet
+Act: SendSelf WaitingRoom Send 1 WaitingRoom Other
+{
+	*CheckAndAddOne(4,HasTrait Music)
+}
+Text Act:  [Send 1 of your other characters on stage to Waiting Room, Send this to Waiting Room] Look at up to 4 cards from the top of your deck, choose up to 1 <Music> character from among them, show it to your opponent, add it to hand, and send the rest to Waiting Room.
+EndCard
+
+Character: LHS/W122-024
+Name Murozaki Lattice, Kaho Hinoshita
+Color Y
+Level 1
+Cost 1
+Trigger Soul
+Power 3500
+Trait1 Music
+Trait2 Cerise Bouquet
+Auto: OnPlay
+{
+	If StageContains 4 Other && HasTrait Music
+	{
+			*PutCardFromWaitingRoomIntoStock(HasTrait Music)
+	}
+}
+Text Auto: When this is placed on stage from hand, if you have 4 or more other <Music> characters, choose 1 <Music> character in your Waiting Room, you may send it to Stock.
+*YellowEarlyPlayBomb
+EndCard
+
+Climax: LHS/W122-029
+Name Suisai Sekai
+*ChoiceClimax
+EndCard
+
+Character: LHS/W122-030
+Name Dream Believers, Rurino Osawa
+Color R
+Level 0
+Cost 0
+Power 500
+Trait1 Music
+Trait2 Mira-Cra Park
+Auto: OnAttack
+{
+	CostOptions Pay 1|Clock Self
+	PayCost 1 OR Clock
+	{
+		GainSpecialEffect DoubleTrigger
+	}
+}
+Text Auto: [Put the top card of your stock into your waiting room OR Put the top card of your deck into your clock] When this card attacks, you may pay the cost. If you do, during that attack, perform a trigger check 2 times on the trigger step.
+*RedLevel0Bomb
+EndCard
+
+Character: LHS/W122-031
+Name Dream Believers, Tsuzuri Yugiri
+Color R
+Level 3
+Cost 2
+Power 10500
+Trigger Soul
+Soul 2
+Trait1 Music
+Trait2 DOLLCHESTRA
+Combo TsuzuriCX
+Auto: OnPlay
+{
+	PayCost Send 1 WaitingRoom Other && HasTrait Music
+	{
+		Peek Deck 3
+		AIChoice AddToHand
+		Message Choose a card to add to your hand.
+		ChooseCardsFromTargets 0 1 Any
+		MoveCard Hand
+		TargetLocation ScryArea
+		Message Choose a card to send to stock.
+		ChooseCardsFromTargets 0 1 Any
+		MoveCard Stock
+		PutTheRestIntoTheWaitingRoom
+	}
+}
+Text Auto:  [Send 1 of your other <Music> characters on stage to Waiting Room] When this is placed on stage, you may pay cost. If you do, look at up to 3 cards from the top of your deck, choose up to 1 card from among them, add it to hand, then choose up to 1 card from among them, send it to Stock, and send the rest to Waiting Room.
+Auto: OnAttack
+{
+	If Climax TsuzuriCX
+	{
+		PayCost Discard 2 Any
+		{
+			GainPower 1500
+			MillOpponentBottom 3
+			NarrowTargets IsClimax
+			If Not HasTarget
+			{
+				Burn 1
+				Burn 1
+				Burn 1
+				Burn 1
+			}
+		}
+	}
+}
+Text Auto: CxCombo [Discard 2 cards] When this attacks, if you have "TsuzuriCX" in your CX Area, you may pay cost. If you do, this turn, this gets +1500 power, and send the bottom 3 cards of your opponent's deck to Waiting Room, if there is no CX among them, deal 1 damage to your opponent 4 times
+EndCard
+
+Character: LHS/W122-034
+Name Dream Believers, Megumi Fujishima
+Color R
+Level 3
+Cost 2
+Power 10000
+Trigger Soul
+Soul 2
+Trait1 Music
+Trait2 Mira-Cra Park
+Combo MegumiCX
+Auto: PlacedBy Standby
+{
+	Heal
+}
+Text Auto: When this is placed on stage by the effect of Standby or the ACT effect of {Unknown Megumi}, you may heal 1.
+Auto: OnAttack
+{
+	If Climax MegumiCX && StageContains 2 Other && HasTrait Music
+	{
+		PayCost 1 Discard 1 HasTrait Music
+		{
+			Burn 3
+			TargetTop Deck 2
+			If Compare TargetCount 2 OrMore
+			{
+					Reorder
+			}
+			Else
+			{
+					View
+			}
+		}
+	}
+}
+Text Auto: [(1) Discard 1 <Music> character] When this attacks, if you have "MegumiCX" in your CX Area, and you have 2 or more other <Music> characters, you may pay cost. If you do, deal 3(?) damage to your opponent, then look at up to 2 cards from the top of your deck, and put them back on top in any order.
+EndCard
+
+Character: LHS/W122-038
+Name Hime Anyoji Check5
+Color R
+Level 1
+Cost 0
+Power 4000
+Trait1 Music
+Trait2 Mira-Cra Park
+*OnAttackGivePowerForEachOther(500,Music)
+Auto: OnAttack
+{
+	If Not LocationContains Climax 1 IsClimax
+	{
+		PayCost Discard 1 Any
+		{
+			*CheckAndAddOne(5,HasTrait Music)
+		}
+	}
+}
+Text Auto: [Discard 1 card] When this attacks, if you don't have a CX in your CX Area, you may pay cost. If you do, look at up to 5 cards from the top of your deck, choose up to 1 <Music> character from among them, show it to your opponent, add it to hand, send the rest to Waiting Room.
+EndCard
+
+Character: LHS/W122-039
+Name Tsuzuri Yugiri ReverseSearch
+Color R
+Level 1
+Cost 0
+Power 4500
+Trait1 Music
+Trait2 DOLLCHESTRA
+Auto: OnPlay
+{
+	GainPower 1500
+}
+Text Auto: When this is placed on stage from hand, this turn, this gets +1500 power.
+Auto: OnOpponentReverse
+{
+	PayCost 1 Resonate Dream Believers, Tsuzuri Yugiri
+	{
+		SearchDeck HasTrait Music
+	}
+}
+Text Auto: RESONATE [(1) Reveal "Dream Believers, Tsuzuri Yugiri" from your hand] During the turn this was placed on stage from hand, when this card's battle opponent is Reversed, you may pay cost. If you do, search your deck for up to 1 <Music> character, show it to your opponent, add it to hand, and shuffle your deck afterwards.
+EndCard
+
+Character: LHS/W122-043
+Name Rurino Osawa AssistHeal
+Color R
+Level 3
+Cost 2
+Power 7000
+Trait1 Music
+Trait2 Mira-Cra Park
+*GlobalPower(1500,Music)
+Auto: OnPlay
+{
+	SearchDeck HasTrait Music
+}
+Text Auto: When this is placed on stage from hand, search your deck for up to 1 <Music> character, show it to your opponent, add it to hand, and shuffle your deck afterwards.
+Act: 2 Discard 1 Any
+{
+	Message Choose up to 1 card to put into your hand
+	SearchLocationForTargets Clock 0 1 Any
+	If HasTarget
+	{
+		RevealTargets
+		MoveCard Hand
+	}
+}
+Text Cont: [(2) Discard 1 card, Rest this] Choose 1 card in your Clock, add it to hand.
+EndCard
+
+Climax: LHS/W122-068
+Name MegumiCX
+*StandbyClimax
+EndCard
+
+Climax: LHS/W122-069
+Name TsuzuriCX
+*DoorClimax
+EndCard
+
+Character: LHS/W122-070
+Name Kaho Hinoshita Riki
+Color B
+Level 0
+Cost 0
+Power 1000
+Trait1 Music
+Trait2 Cerise Bouquet
+Auto: OnPlay
+{
+	*Scry
+	TargetLocation Stage
+	ChooseCharacterFromTargets
+	GainPower 1000
+}
+Text Auto: When this is placed on stage from hand, if you have another <Music> character, look at the top card of your deck, and put it on top of your deck or into your Waiting Room, then choose 1 of your characters, this turn, it gets +1000 power.
+Auto: OnPlay
+{
+	PayCost 1 Clock
+	{
+		SearchDeck Compare ThatCardsLevel 1 OrLess && IsCharacter
+	}
+}
+Text Auto: [(1) Put the top card of your deck into your clock] When this card is placed on stage from your hand, you may pay the cost. If you do, search your deck for up to 1 level 1 or lower character and add it to your hand.
+EndCard
+
+Character: LHS/W122-071
+Name Dream Believers, Sayaka Murano
+Color B
+Level 1
+Cost 0
+Power 3000
+Trigger Soul
+Trait1 Music
+Trait2 DOLLCHESTRA
+Combo SayakaCX
+Cont: GiveSelf
+{
+	If MyTurn
+	{
+		GainPower 3000
+	}
+}
+Text Cont: During your turn, this gets +3000 power.
+Auto: OnAttack
+{
+		If Climax SayakaCX
+		{
+			GainPower 500
+			SetXValue 0
+			Repeat 3
+			{
+				Question Mill 1?
+				If Yes
+				{
+					Mill 1
+					NarrowTargets HasTrait Music
+					If HasTarget
+					{
+						AddToXValue 1
+					}
+				}
+			}
+			Message Choose a level X or lower character in your waiting room
+			SearchWaitingRoom Compare ThatCardsLevel X OrLess && HasTrait Music && IsCharacter
+		}
+}
+Text Auto: CxCombo When this attacks, if you have "SayakaCX" in your CX Area, and you have 2 or more other <Music> characters, mill up to 3, then choose up to 1 Level X or lower <Music> character from your Waiting Room, add it to hand, and this turn, this gets +500 power. X equals the number of <Music> characters milled by this effect.
+EndCard
+
+Character: LHS/W122-072
+Name Dream Believers, Kosuzu Kachimachi
+Color B
+Level 3
+Cost 2
+Power 8000
+Trigger Soul
+Soul 2
+Trait1 Music
+Trait2 DOLLCHESTRA
+*EarlyPlay4OrMore(Music)
+*Healer
+Auto: OnPlay
+{
+	If StageContains 2 Other && HasTrait Music
+	{
+		GainPower 3000
+		GainEffect
+		{
+			Auto: OnReverseOpponent
+			{
+				TargetBattleOpponent
+				Question Put the battle opponent on the bottom of the deck?
+				If Yes
+				{
+					MoveCardToBottom OpponentDeck
+				}
+			}
+		}
+	}
+}
+Text Auto: When this is placed on stage from hand, if you have 2 or more other <Music> characters, this turn, this gets +3000 power and the following ability, "AUTO - When this card's battle opponent is Reversed, you may send that character to the bottom of your opponent's deck."
+EndCard
+
+Character: LHS/W122-074
+Name Sayaka Murano Brainstorm
+Color B
+Level 0
+Cost 0
+Power 1500
+Trait1 Music
+Trait2 DOLLCHESTRA
+Auto: StartClimaxPhase
+{
+	PayCost Resonate Dream Believers, Tsuzuri Yugiri
+	{
+		If Compare MyLevel 1 OrLess
+		{
+			TargetLocation Stage
+			ChooseCharacterFromTargets
+			GainPower 1000
+		}
+		If Compare MyLevel 2 OrMore
+		{
+			TargetLocation Stage
+			ChooseCharacterFromTargets
+			UntilEndOfOpponentsTurn
+			GainPower 1000
+		}
+	}
+}
+Text Auto: RESONATE [Reveal "Dream Believers, Tsuzuri Yugiri" from your hand] At the start of your CX Phase, you may pay cost. If you do, choose 1 of the following 2 effects and resolve it, "If you are Level 1 or lower, choose 1 of your other <DOLLCHESTRA> characters, this turn, it gets +1000 power.", "If you are Level 2 or higher, choose 1 of your other <DOLLCHESTRA> characters, until the end of your opponent's next turn, it gets +1000 power."
+*Act1RestSelfSalvageBrainstorm(DOLLCHESTRA)
+EndCard
+
+Character: LHS/W122-075
+Name Kosuzu Kachimachi Riko
+Color B
+Level 0
+Cost 0
+Power 1000
+Trait1 Music
+Trait2 DOLLCHESTRA
+Auto: OnPlay
+{
+	PayCost Discard 1 Any
+	{
+		TargetTop Deck 1
+		Reveal
+		SetXValue TargetCardsLevel
+		SearchLocationForTargets WaitingRoom 1 1 IsCharacter && Compare ThatCardsLevel X OrLess
+		RevealTargets
+		MoveCard Hand
+	}
+}
+Text Auto: [Put 1 card from your hand into your waiting room] When this card is placed on stage from your hand, you may pay the cost. If you do, reveal the top card of your deck, choose a level X or lower character in your waiting room and return it to your hand. X is equal to the level of the card revealed this way.
+EndCard
+
+Character: LHS/W122-094
+Name Murozaki Lattice, Ginko Momose
+Color B
+Level 2
+Cost 1
+Power 7000
+Trait1 Music
+Trait2 Cerise Bouquet
+Auto: OnAttack
+{
+	TargetLocation Facing
+	If Compare TargetCardsLevel 3 OrMore
+	{
+		TargetSelf
+		GainPower 6000
+		GainSoul 2
+	}
+}
+Text Auto: When this attacks, if the Level of the character across from this is 3 or higher, this turn, this gets +6000 power and +2 Souls.
+EndCard
+
+Climax: LHS/W122-100
+Name SayakaCX
+*GateClimax
+EndCard
+
+Character: LHS/W122-T02
+Name Rainbow Chiffon, Hime Anyoji
+Color Y
+Level 0
+Cost 0
+Power 1500
+Trait1 Music
+Trait2 Mira-Cra Park
+Cont: GiveAll
+{
+	If Other && HasTrait Music
+	{
+		GainPower 500
+	}
+}
+Text Cont: All of your other <Music> characters get +500 power.
+*SacrificeToSave(HasTrait Music)
+Text Auto:  [Send this to Waiting Room] When your other <Music> character is sent from stage to Waiting Room, if this is in your Back Row, you may pay cost. If you do, return that character to stage in its former slot Rested.
+EndCard
+
+Character: LHS/W122-T04
+Name Rainbow Chiffon, Rurino Osawa
+Color Y
+Level 0
+Cost 0
+Power 4000
+Trait1 Music
+Trait2 Mira-Cra Park
+*GiveAllOpponentsEncore2
+EndCard
+
+Character: LHS/W122-T05
+Name Rainbow Chiffon, Kaho Hinoshita
+Color Y
+Level 1
+Cost 0
+Power 4500
+Trait1 Music
+Trait2 Cerise Bouquet
+Combo Fortune Movie
+Auto: OnAttack
+{
+	If StageContains 2 Other && HasTrait Music
+	{
+		GainPower 2000
+	}
+}
+Text Auto: When this attacks, if you have 2 or more other <Music> characters, this turn, this gets +2000 power.
+Auto: OnAttack
+{
+	If Climax KahoTDCX
+	{
+		If StageContains 1 Other && HasTrait Music
+		{
+			Mill 2
+			SetXValue TotalLevel
+			SearchWaitingRoom HasTrait Music && Compare ThatCardsLevel X OrLower
+		}
+	}
+}
+Text Auto: CxCombo When this Attacks, if you have "Fortune Movie" in your CX Area, and you have another <Music> character, mill 2, then choose up to 1 Level X or lower <Music> character from your Waiting Room, and add it to hand. X equals the sum of Levels of cards milled by this effect.
+EndCard
+
+Character: LHS/W122-T07
+Name Rainbow Chiffon, Megumi Fujishima
+Color Y
+Level 3
+Cost 2
+Soul 2
+Trigger Soul
+Power 10500
+Trait1 Music
+Trait2 Mira-Cra Park
+Cont: GiveSelf
+{
+	If InBattle
+	{
+		GainSpecialEffect ReceiveNoDamageFromAutoEffects
+	}
+}
+Text Cont: During this card's battle, you do not receive damage from your opponent character's AUTO effects.
+Auto: OnPlay
+{
+	Question_Obvious Send a character in your clock to the bottom of the deck?
+	If Yes
+	{
+		TargetLocation Clock
+		NarrowTargets HasTrait Music
+		ChooseCharacterFromTargets Choose a character to send to the bottom of the deck.
+		MoveCardToBottom Deck
+	}
+}
+Text Auto: When this is placed on stage from hand, choose 1 <Music> character from your Clock, you may put it on the bottom of your deck.
+EndCard
+
+Character: LHS/W122-T08
+Name Rainbow Chiffon, Ginko Momose
+Color Y
+Level 3
+Cost 2
+Soul 2
+Trigger Soul
+Power 10500
+Trait1 Music
+Trait2 Cerise Bouquet
+Auto: OnPlay
+{
+	If StageContains 4 Other && HasTrait hololive
+	{
+		Message Choose up to 1 character to put into your stock.
+		SearchLocationForTargets WaitingRoom 0 1 HasTrait Music
+		RevealTargets
+		MoveCard Stock
+	}
+}
+Auto: OnPlay
+{
+	PayCost 1
+	{
+		SearchWaitingRoom IsClimax
+	}
+}
+Text Auto: [(1)] When this is placed on stage from hand, you may pay cost. If you do, choose 1 climax from your waiting room, and add it to hand.
+EndCard
+
+Climax: LHS/W122-T10
+Name Fortune Movie
+*ChoiceClimax
+EndCard
+
+Character: LHS/W122-T12
+Name Rainbow Chiffon, Tsuzuri Yugiri
+Color B
+Level 0
+Cost 0
+Power 1000
+Trait1 Music
+Trait2 DOLLCHESTRA
+Auto: OnPlay|OnAttack
+{
+	TargetLocation Stage
+	ChooseCharacterFromTargets
+	GainPower 1500
+}
+EndCard
+Text Auto: When this is placed on stage from hand or attacks, if all of your characters are <Music>, choose 1 of your characters, this turn, it gets +1500 power.
+
+Character: LHS/W122-T13
+Name Rainbow Chiffon, Kozue Otomune
+Color Y
+Level 0
+Cost 0
+Power 2000
+Trait1 Music
+Trait2 Cerise Bouquet
+Cont: GiveSelf
+{
+	If AllYourCharacters HasTrait Music
+	{
+		GainPower 1500
+		GainEffect
+		{
+			Auto: OnOpponentReverse
+			{
+				Message Choose a <Music> character to return to your hand
+				SearchLocationForTargets WaitingRoom 1 1 IsCharacter && HasTrait Music
+				RevealTargets
+				MoveCard Hand
+				Discard 1 Any
+			}
+			Text Auto: When this card's battle opponent becomes reversed in battle, choose 1 <Music> character in your waiting room and return it to your hand, and discard a card.
+		}
+	}
+}
+Text Cont: If all of your characters are <Music> this gets +1500 power and the following ability, "AUTO - When this card's battle opponent is Reversed, choose 1 <Music> character in your Waiting Room, add it to hand, then discard 1 card."
+EndCard
+
+Character: LHS/W122-T14
+Name Rainbow Chiffon, Kosuzu Kachimachi
+Color B
+Level 1
+Cost 1
+Power 5500
+Trait1 Music
+Trait2 DOLLCHESTRA
+Cont: GiveSelf
+{
+	If StageContains 2 Other && HasTrait Music
+	{
+		GainPower 2000
+	}
+}
+Text Cont: If you have 2 or more other <Music> characters, this gets +2000 power.
+Auto: Encore SendFromWaitingRoomToBottom 1 Clock HasTrait Music
+{
+}
+Text Auto: ENCORE [Put 1 Music character from your waiting room at the bottom of your clock]
+EndCard
+
+Character: LHS/W122-T17
+Name Rainbow Chiffon, Sayaka Murano
+Color B
+Level 3
+Cost 2
+Soul 2
+Trigger Soul
+Power 10000
+Trait1 Music
+Trait2 DOLLCHESTRA
+Combo SayakaTDCX
+*Healer
+Auto: OnAttack
+{
+	If Climax SayakaTDCX
+	{
+		PayCost 1 Discard 1 Any
+		{
+			Burn 3
+			GainEffect
+			{
+				Auto: OnEndOfAttack
+				{
+					PayCost 2 SendClimax WaitingRoom
+					{
+						Burn 1
+					}
+				}
+				Text Auto: [(2) Send 1 CX from your CX Area to Waiting Room] At the end of this card's attack, you may pay cost> if you do, deal 1 damage to your opponent.
+			}
+		}
+	}
+}
+Text Auto: [(1) Discard 1 card] When this attacks, if you have the SayakaTDCX in your CX Area, and you have 3 or more other <Music> characters, you may pay cost. If you do, deal 3 damage to your opponent, and this turn, this gains the following ability, "AUTO - [(2) Send 1 CX from your CX Area to Waiting Room] At the end of this card's attack, you may pay cost> if you do, deal 1 damage to your opponent."
+EndCard
+
+Climax: LHS/W122-T100
+Name SayakaTDCX
+*GateClimax
+EndCard
