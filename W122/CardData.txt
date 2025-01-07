@@ -298,7 +298,7 @@ Text Auto: [Put the top card of your stock into your waiting room OR Put the top
 *RedLevel0Bomb
 EndCard
 
-Character: LHS/W122-031
+Character: LHS/W122-035
 Name Dream Believers, Tsuzuri Yugiri
 Color R
 Level 3
@@ -308,7 +308,7 @@ Trigger Soul
 Soul 2
 Trait1 Music
 Trait2 DOLLCHESTRA
-Combo TsuzuriCX
+Combo Tragic Drops
 Auto: OnPlay
 {
 	PayCost Send 1 WaitingRoom Other && HasTrait Music
@@ -328,7 +328,7 @@ Auto: OnPlay
 Text Auto:  [Send 1 of your other <Music> characters on stage to Waiting Room] When this is placed on stage, you may pay cost. If you do, look at up to 3 cards from the top of your deck, choose up to 1 card from among them, add it to hand, then choose up to 1 card from among them, send it to Stock, and send the rest to Waiting Room.
 Auto: OnAttack
 {
-	If Climax TsuzuriCX
+	If Climax Tragic Drops
 	{
 		PayCost Discard 2 Any
 		{
@@ -345,7 +345,7 @@ Auto: OnAttack
 		}
 	}
 }
-Text Auto: CxCombo [Discard 2 cards] When this attacks, if you have "TsuzuriCX" in your CX Area, you may pay cost. If you do, this turn, this gets +1500 power, and send the bottom 3 cards of your opponent's deck to Waiting Room, if there is no CX among them, deal 1 damage to your opponent 4 times
+Text Auto: CxCombo [Discard 2 cards] When this attacks, if you have "Tragic Drops" in your CX Area, you may pay cost. If you do, this turn, this gets +1500 power, and send the bottom 3 cards of your opponent's deck to Waiting Room, if there is no CX among them, deal 1 damage to your opponent 4 times
 EndCard
 
 Character: LHS/W122-034
@@ -423,9 +423,12 @@ Auto: OnPlay
 Text Auto: When this is placed on stage from hand, this turn, this gets +1500 power.
 Auto: OnOpponentReverse
 {
-	PayCost 1 Resonate Dream Believers, Tsuzuri Yugiri
+	If PlayedThisTurn
 	{
-		SearchDeck HasTrait Music
+		PayCost 1 Resonate Dream Believers, Tsuzuri Yugiri
+		{
+			SearchDeck HasTrait Music
+		}
 	}
 }
 Text Auto: RESONATE [(1) Reveal "Dream Believers, Tsuzuri Yugiri" from your hand] During the turn this was placed on stage from hand, when this card's battle opponent is Reversed, you may pay cost. If you do, search your deck for up to 1 <Music> character, show it to your opponent, add it to hand, and shuffle your deck afterwards.
@@ -458,14 +461,85 @@ Act: 2 Discard 1 Any
 Text Cont: [(2) Discard 1 card, Rest this] Choose 1 card in your Clock, add it to hand.
 EndCard
 
+Character: LHS/W122-054
+Name Murozaki Lattice, Sayaka Murano
+Color R
+Level 0
+Cost 0
+Power 1000
+Trait1 Music
+Trait2 DOLLCHESTRA
+Cont: GiveSelf
+{
+	TargetLocation CenterStage
+	NarrowTargets Other && NameEquals Murozaki Lattice, Tsuzuri Yugiri
+	If HasTarget
+	{
+		TargetSelf
+		GainPower 3000
+		GainTrait Bento
+		GainEffect
+		{
+			*OnAttackPay1ToDoubleTrigger
+		}
+	}
+}
+Cont: GiveAll
+{
+	TargetLocation CenterStage
+	NarrowTargets Other && NameEquals Murozaki Lattice, Tsuzuri Yugiri
+	If HasTarget
+	{
+		If Other && NameEquals Murozaki Lattice, Tsuzuri Yugiri
+		{
+			GainTrait Bento
+			GainEffect
+			{
+				*OnAttackPay1ToDoubleTrigger
+			}
+		}
+	}
+}
+Text Cont:  If you have another front row "Murozaki Lattice, Tsuzuri Yugiri", this gets +3000 power, and all of your other "Murozaki Lattice, Tsuzuri Yugiri" and this gains <Bento> and the following ability, "AUTO - (1) When this attacks, you may pay cost. If you do, during the Trigger Step of this attack, perform Trigger Check twice."
+Auto: OnPlay
+{
+	PayCost Discard 1 Any
+	{
+		*SearchDeckToPlaceOnStage(NameEquals Murozaki Lattice\, Tsuzuri Yugiri, False)
+	}
+}
+Text Auto: [Discard 1 card] When this is placed on stage from hand, you may pay cost. If you do, search your deck for up to 1 "Murozaki Lattice, Tsuzuri Yugiri", place it on stage in any slot, and shuffle your deck afterwards.
+EndCard
+
+Character: LHS/W122-059
+Name Murozaki Lattice, Tsuzuri Yugiri
+Color R
+Level 0
+Cost 0
+Power 3500
+Trait1 Music
+Trait2 DOLLCHESTRA
+Auto: OnPlay
+{
+	Mill 1
+	NarrowTargets IsClimax
+	If HasTarget
+	{
+		TargetSelf
+		MoveCard Stock
+	}
+}
+Text Auto: When this is placed on stage from hand, mill 1. If that card is a CX, send this to Stock.
+EndCard
+
+Climax: LHS/W122-066
+Name Tragic Drops
+*DoorClimax
+EndCard
+
 Climax: LHS/W122-068
 Name MegumiCX
 *StandbyClimax
-EndCard
-
-Climax: LHS/W122-069
-Name TsuzuriCX
-*DoorClimax
 EndCard
 
 Character: LHS/W122-070
@@ -503,7 +577,7 @@ Power 3000
 Trigger Soul
 Trait1 Music
 Trait2 DOLLCHESTRA
-Combo SayakaCX
+Combo AWOKE
 Cont: GiveSelf
 {
 	If MyTurn
@@ -514,7 +588,7 @@ Cont: GiveSelf
 Text Cont: During your turn, this gets +3000 power.
 Auto: OnAttack
 {
-		If Climax SayakaCX
+		If Climax AWOKE
 		{
 			GainPower 500
 			SetXValue 0
@@ -535,7 +609,7 @@ Auto: OnAttack
 			SearchWaitingRoom Compare ThatCardsLevel X OrLess && HasTrait Music && IsCharacter
 		}
 }
-Text Auto: CxCombo When this attacks, if you have "SayakaCX" in your CX Area, and you have 2 or more other <Music> characters, mill up to 3, then choose up to 1 Level X or lower <Music> character from your Waiting Room, add it to hand, and this turn, this gets +500 power. X equals the number of <Music> characters milled by this effect.
+Text Auto: CxCombo When this attacks, if you have "AWOKE" in your CX Area, and you have 2 or more other <Music> characters, mill up to 3, then choose up to 1 Level X or lower <Music> character from your Waiting Room, add it to hand, and this turn, this gets +500 power. X equals the number of <Music> characters milled by this effect.
 EndCard
 
 Character: LHS/W122-072
@@ -626,12 +700,48 @@ Auto: OnPlay
 Text Auto: [Put 1 card from your hand into your waiting room] When this card is placed on stage from your hand, you may pay the cost. If you do, reveal the top card of your deck, choose a level X or lower character in your waiting room and return it to your hand. X is equal to the level of the card revealed this way.
 EndCard
 
+Character: LHS/W122-085
+Name Murozaki Lattice, Kosuzu Kachimachi
+Color B
+Level 0
+Cost 0
+Power 500
+Trait1 Music
+Trait2 DOLLCHESTRA
+*BlueLevel0Bomb
+Auto: StartClimaxPhase
+{
+	TargetLocation Stage
+	NarrowTargets HasTrait Music
+	ChooseCharacterFromTargets
+	GainEffect
+	{
+		Auto: OnReverseOpponent
+		{
+			TargetBattleOpponent
+			IfTarget OnStage
+			{
+				Question Put the battle opponent on the bottom of your opponent's deck?
+				If Yes
+				{
+					TargetBattleOpponent
+					MoveCard BottomOfOpponentDeck
+				}
+			}
+		}
+	}
+}
+Alarm
+Text Auto:  If this is on top of your Clock, at the start of your Climax Phase, choose 1 of your <Music> characters, this turn, it gains the following ability, "AUTO - When this card's battle opponent is Reversed, you may send that character to the bottom of your opponent's deck.
+EndCard
+
 Character: LHS/W122-094
 Name Murozaki Lattice, Ginko Momose
 Color B
 Level 2
 Cost 1
 Power 7000
+Trigger Soul
 Trait1 Music
 Trait2 Cerise Bouquet
 Auto: OnAttack
@@ -647,8 +757,8 @@ Auto: OnAttack
 Text Auto: When this attacks, if the Level of the character across from this is 3 or higher, this turn, this gets +6000 power and +2 Souls.
 EndCard
 
-Climax: LHS/W122-100
-Name SayakaCX
+Climax: LHS/W122-097
+Name AWOKE
 *GateClimax
 EndCard
 
@@ -702,7 +812,7 @@ Auto: OnAttack
 Text Auto: When this attacks, if you have 2 or more other <Music> characters, this turn, this gets +2000 power.
 Auto: OnAttack
 {
-	If Climax KahoTDCX
+	If Climax Fortune Movie
 	{
 		If StageContains 1 Other && HasTrait Music
 		{
@@ -861,11 +971,11 @@ Trigger Soul
 Power 10000
 Trait1 Music
 Trait2 DOLLCHESTRA
-Combo SayakaTDCX
+Combo Tsukimakase
 *Healer
 Auto: OnAttack
 {
-	If Climax SayakaTDCX
+	If Climax Tsukimakase
 	{
 		PayCost 1 Discard 1 Any
 		{
@@ -884,10 +994,10 @@ Auto: OnAttack
 		}
 	}
 }
-Text Auto: [(1) Discard 1 card] When this attacks, if you have the SayakaTDCX in your CX Area, and you have 3 or more other <Music> characters, you may pay cost. If you do, deal 3 damage to your opponent, and this turn, this gains the following ability, "AUTO - [(2) Send 1 CX from your CX Area to Waiting Room] At the end of this card's attack, you may pay cost> if you do, deal 1 damage to your opponent."
+Text Auto: [(1) Discard 1 card] When this attacks, if you have "Tsukimakase" in your CX Area, and you have 3 or more other <Music> characters, you may pay cost. If you do, deal 3 damage to your opponent, and this turn, this gains the following ability, "AUTO - [(2) Send 1 CX from your CX Area to Waiting Room] At the end of this card's attack, you may pay cost> if you do, deal 1 damage to your opponent."
 EndCard
 
-Climax: LHS/W122-T100
-Name SayakaTDCX
+Climax: LHS/W122-T18
+Name Tsukimakase
 *GateClimax
 EndCard
