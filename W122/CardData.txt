@@ -139,7 +139,7 @@ Soul 2
 Trigger Soul
 Power 10500
 Trait1 Music
-Trait2 Mira-Cra Park
+Trait2 Mira-Cra Park!
 Auto: OnAttack
 {
 	PayCost 3 Discard 1 Any
@@ -164,7 +164,7 @@ Soul 2
 Trigger Soul
 Power 6500
 Trait1 Music
-Trait2 Mira-Cra Park
+Trait2 Mira-Cra Park!
 Cont: GiveSelf
 {
 	If MyTurn
@@ -285,7 +285,7 @@ Level 0
 Cost 0
 Power 500
 Trait1 Music
-Trait2 Mira-Cra Park
+Trait2 Mira-Cra Park!
 Auto: OnAttack
 {
 	CostOptions Pay 1|Clock Self
@@ -357,8 +357,8 @@ Power 10000
 Trigger Soul
 Soul 2
 Trait1 Music
-Trait2 Mira-Cra Park
-Combo MegumiCX
+Trait2 Mira-Cra Park!
+Combo Do! Do! Do!
 Auto: PlacedBy Standby
 {
 	Heal
@@ -366,7 +366,7 @@ Auto: PlacedBy Standby
 Text Auto: When this is placed on stage by the effect of Standby or the ACT effect of {Unknown Megumi}, you may heal 1.
 Auto: OnAttack
 {
-	If Climax MegumiCX && StageContains 2 Other && HasTrait Music
+	If Climax Do! Do! Do! && StageContains 2 Other && HasTrait Music
 	{
 		PayCost 1 Discard 1 HasTrait Music
 		{
@@ -383,7 +383,7 @@ Auto: OnAttack
 		}
 	}
 }
-Text Auto: [(1) Discard 1 <Music> character] When this attacks, if you have "MegumiCX" in your CX Area, and you have 2 or more other <Music> characters, you may pay cost. If you do, deal 3(?) damage to your opponent, then look at up to 2 cards from the top of your deck, and put them back on top in any order.
+Text Auto: [(1) Discard 1 <Music> character] When this attacks, if you have "Do! Do! Do!" in your CX Area, and you have 2 or more other <Music> characters, you may pay cost. If you do, deal 3(?) damage to your opponent, then look at up to 2 cards from the top of your deck, and put them back on top in any order.
 EndCard
 
 Character: LHS/W122-038
@@ -393,7 +393,7 @@ Level 1
 Cost 0
 Power 4000
 Trait1 Music
-Trait2 Mira-Cra Park
+Trait2 Mira-Cra Park!
 *OnAttackGivePowerForEachOther(500,Music)
 Auto: OnAttack
 {
@@ -441,7 +441,7 @@ Level 3
 Cost 2
 Power 7000
 Trait1 Music
-Trait2 Mira-Cra Park
+Trait2 Mira-Cra Park!
 *GlobalPower(1500,Music)
 Auto: OnPlay
 {
@@ -475,27 +475,24 @@ Cont: GiveSelf
 	NarrowTargets Other && NameEquals Murozaki Lattice, Tsuzuri Yugiri
 	If HasTarget
 	{
-		TargetSelf
 		GainPower 3000
 		GainTrait Bento
 		GainEffect
 		{
 			*OnAttackPay1ToDoubleTrigger
 		}
-	}
-}
-Cont: GiveAll
-{
-	TargetLocation CenterStage
-	NarrowTargets Other && NameEquals Murozaki Lattice, Tsuzuri Yugiri
-	If HasTarget
-	{
-		If Other && NameEquals Murozaki Lattice, Tsuzuri Yugiri
+		GainEffect
 		{
-			GainTrait Bento
-			GainEffect
+			Cont: GiveAll
 			{
-				*OnAttackPay1ToDoubleTrigger
+				If NameEquals Murozaki Lattice, Tsuzuri Yugiri
+				{
+					GainTrait Bento
+					GainEffect
+					{
+						*OnAttackPay1ToDoubleTrigger
+					}
+				}
 			}
 		}
 	}
@@ -509,6 +506,49 @@ Auto: OnPlay
 	}
 }
 Text Auto: [Discard 1 card] When this is placed on stage from hand, you may pay cost. If you do, search your deck for up to 1 "Murozaki Lattice, Tsuzuri Yugiri", place it on stage in any slot, and shuffle your deck afterwards.
+EndCard
+
+Character: LHS/W122-056
+Name Murozaki Lattice, Rurino Osawa
+Color R
+Level 0
+Cost 0
+Power 1000
+Trait1 Music
+Trait2 Mira-Cra Park!
+Act: 1 RestSelf
+{
+	Brainstorm 4
+	If Compare BrainstormedClimax 1 OrMore
+	{
+		SetXValue BrainstormedClimax
+		Repeat X
+		{
+			SearchDeck IsCharacter && HasTrait Music
+		}
+		ShuffleLocation Deck
+	}
+}
+Text Act: [(1) Rest this] Flip over the top 4 cards of your deck, then send them to Waiting Room. For each CX among them, search your deck for up to 1 <Music> character, show it to your opponent, add it to hand, and shuffle your deck afterwards.
+EndCard
+
+Character: LHS/W122-057
+Name Murozaki Lattice, Hime Anyoji
+Color R
+Level 0
+Cost 0
+Power 1500
+Trait1 Music
+Trait2 Mira-Cra Park!
+*ScryOnPlay
+Act: 1 SendSelf WaitingRoom
+{
+	Peek Deck 4
+	ChooseCardsFromTargets 0 1 IsCharacter && HasTrait Music
+	RevealTargets
+	MoveCard Hand
+}
+Text Act: [(1) Send this to Waiting Room] Look at up to 4 cards from the top of your deck, choose up to 1 <Music> character from among them, show it to your opponent, add it to hand, and send the rest to Waiting Room.
 EndCard
 
 Character: LHS/W122-059
@@ -532,14 +572,34 @@ Auto: OnPlay
 Text Auto: When this is placed on stage from hand, mill 1. If that card is a CX, send this to Stock.
 EndCard
 
+Character: LHS/W122-062
+Name Murozaki Lattice, Megumi Fujishima
+Color R
+Level 1
+Cost 1
+Power 5500
+Trait1 Music
+Trait2 Mira-Cra Park!
+Cont: GiveSelf
+{
+	If StageContains 2 Other && HasTrait Music
+	{
+		GainPower 2000
+	}
+}
+Text Cont: If you have 2 or more other <Music> characters, this gets +2000 power.
+*HandEncore
+Text Auto: When this is placed on stage from hand, mill 1. If that card is a CX, send this to Stock.
+EndCard
+
+Climax: LHS/W122-065
+Name Do! Do! Do!
+*StandbyClimax
+EndCard
+
 Climax: LHS/W122-066
 Name Tragic Drops
 *DoorClimax
-EndCard
-
-Climax: LHS/W122-068
-Name MegumiCX
-*StandbyClimax
 EndCard
 
 Character: LHS/W122-070
@@ -588,7 +648,7 @@ Cont: GiveSelf
 Text Cont: During your turn, this gets +3000 power.
 Auto: OnAttack
 {
-		If Climax AWOKE
+		If Climax AWOKE && StageContains 2 Other && HasTrait Music
 		{
 			GainPower 500
 			SetXValue 0
@@ -769,7 +829,7 @@ Level 0
 Cost 0
 Power 1500
 Trait1 Music
-Trait2 Mira-Cra Park
+Trait2 Mira-Cra Park!
 Cont: GiveAll
 {
 	If Other && HasTrait Music
@@ -782,6 +842,36 @@ Text Cont: All of your other <Music> characters get +500 power.
 Text Auto:  [Send this to Waiting Room] When your other <Music> character is sent from stage to Waiting Room, if this is in your Back Row, you may pay cost. If you do, return that character to stage in its former slot Rested.
 EndCard
 
+Character: LHS/W122-T03
+Name Rainbow Chiffon, Kozue Otomune
+Color Y
+Level 0
+Cost 0
+Power 2000
+Trait1 Music
+Trait2 Cerise Bouquet
+Cont: GiveSelf
+{
+	If AllYourCharacters HasTrait Music
+	{
+		GainPower 1500
+		GainEffect
+		{
+			Auto: OnOpponentReverse
+			{
+				Message Choose a <Music> character to return to your hand
+				SearchLocationForTargets WaitingRoom 1 1 IsCharacter && HasTrait Music
+				RevealTargets
+				MoveCard Hand
+				Discard 1 Any
+			}
+			Text Auto: When this card's battle opponent becomes reversed in battle, choose 1 <Music> character in your waiting room and return it to your hand, and discard a card.
+		}
+	}
+}
+Text Cont: If all of your characters are <Music> this gets +1500 power and the following ability, "AUTO - When this card's battle opponent is Reversed, choose 1 <Music> character in your Waiting Room, add it to hand, then discard 1 card."
+EndCard
+
 Character: LHS/W122-T04
 Name Rainbow Chiffon, Rurino Osawa
 Color Y
@@ -789,7 +879,7 @@ Level 0
 Cost 0
 Power 4000
 Trait1 Music
-Trait2 Mira-Cra Park
+Trait2 Mira-Cra Park!
 *GiveAllOpponentsEncore2
 EndCard
 
@@ -834,7 +924,7 @@ Soul 2
 Trigger Soul
 Power 10500
 Trait1 Music
-Trait2 Mira-Cra Park
+Trait2 Mira-Cra Park!
 Cont: GiveSelf
 {
 	If InBattle
@@ -908,36 +998,6 @@ Auto: OnPlay|OnAttack
 }
 EndCard
 Text Auto: When this is placed on stage from hand or attacks, if all of your characters are <Music>, choose 1 of your characters, this turn, it gets +1500 power.
-
-Character: LHS/W122-T13
-Name Rainbow Chiffon, Kozue Otomune
-Color Y
-Level 0
-Cost 0
-Power 2000
-Trait1 Music
-Trait2 Cerise Bouquet
-Cont: GiveSelf
-{
-	If AllYourCharacters HasTrait Music
-	{
-		GainPower 1500
-		GainEffect
-		{
-			Auto: OnOpponentReverse
-			{
-				Message Choose a <Music> character to return to your hand
-				SearchLocationForTargets WaitingRoom 1 1 IsCharacter && HasTrait Music
-				RevealTargets
-				MoveCard Hand
-				Discard 1 Any
-			}
-			Text Auto: When this card's battle opponent becomes reversed in battle, choose 1 <Music> character in your waiting room and return it to your hand, and discard a card.
-		}
-	}
-}
-Text Cont: If all of your characters are <Music> this gets +1500 power and the following ability, "AUTO - When this card's battle opponent is Reversed, choose 1 <Music> character in your Waiting Room, add it to hand, then discard 1 card."
-EndCard
 
 Character: LHS/W122-T14
 Name Rainbow Chiffon, Kosuzu Kachimachi
