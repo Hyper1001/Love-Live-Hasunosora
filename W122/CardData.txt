@@ -155,6 +155,146 @@ Auto: OnAttack
 Text Auto:  [(3) Discard 1 card] When this attacks, you may pay cost. If you do, send the bottom 6 cards of your opponent's deck to Waiting Room, then deal 1 damage to your opponent X times. X equals the number of CXes sent to Waiting Room by this effect.
 EndCard
 
+Character: LHS/W122-005
+Name Aoku Haruka, Kozue Otomune
+Color Y
+Level 0
+Cost 0
+Power 1000
+Trait1 Music
+Trait2 Cerise Bouquet
+Auto: OnPlay
+{
+	PayCost Discard 1 Any
+	{
+		TargetTop Deck 1
+		Reveal
+		SetXValue TargetCardsLevel
+		SearchLocationForTargets WaitingRoom 1 1 HasTrait Cerise Bouquet && Compare ThatCardsLevel X OrLess
+		RevealTargets
+		MoveCard Hand
+	}
+}
+Text Auto: [Discard 1 card] When this is placed on stage from hand, you may pay cost. If you do, reveal the top card of your deck, then choose 1 Level X or lower <Cerise Bouquet> character from your Waiting Room, and add it to hand. X equals the Level of the revealed card.
+Cont: GiveSelf
+{
+	If Compare MyLevel 3 OrMore
+	{
+		GainEffect
+		{
+			Act: 2 SendSelf WaitingRoom
+			{
+				SearchLocationForTargets WaitingRoom 1 1 NameEquals Kozue Otomune FreePlay
+				PlaceOnStage false true true false
+			}
+		}
+	}
+}
+Text Act: [(2) Send this to Waiting Room] If you are Level 3 or higher, choose 1 "Kozue Otomune FreePlay" in your Waiting Room, place it on stage in this card's former slot.
+EndCard
+
+Character: LHS/W122-007
+Name Aoku Haruka, Ginko Momose
+Color Y
+Level 0
+Cost 0
+Power 1000
+Trait1 Music
+Trait2 Cerise Bouquet
+Combo Aoku Haruka
+Auto: StartMyEncorePhase
+{
+	If Climax Aoku Haruka
+	{
+		PayCost SendClimax WaitingRoom
+		{
+		RevealUpTo Deck 3
+			Message Choose up to 2 <Cerise Bouquet> characters to put into your hand
+			ChooseCardsFromTargets 0 2 HasTrait Cerise Bouquet
+			MoveCard Hand
+			PutTheRestIntoTheWaitingRoom
+		}
+	}
+}
+Text Auto: CxCombo [Send the Choice CX from your CX Area to Waiting Room] At the start of your Encore Step, if you have 2 or more other <Cerise Bouquet> characters, you may pay cost. If you do, look at up to 3 cards from the top of your deck, choose up to 2 <Cerise Bouquet> character from among them, show them to your opponent, add them to hand, send the rest to Waiting Room.
+Act: RestSelf
+{
+	TargetLocation Stage
+	ChooseCharacterFromTargets
+	GainEffect
+	{
+		Auto: OnAttack
+		{
+			GainSpecialEffect DoubleTrigger
+			GainEffect
+			{
+				Auto: OnEndOfAttack
+				{
+					TargetTop Stock 1
+					MoveCard WaitingRoom
+				}
+			}
+		}
+		Text Auto: When this attacks, during the Trigger Step of this attack, perform Trigger Check twice. If you triggered twice, put the top card of your Stock to Waiting Room.
+	}
+}
+Text Cont: [Rest this] Choose 1 of your characters, this turn, it gains the following ability, "AUTO - When this attacks, during the Trigger Step of this attack, perform Trigger Check twice. If you triggered twice, put the top card of your Stock to Waiting Room."
+EndCard
+
+Character: LHS/W122-008
+Name Aoku Haruka, Kaho Hinoshita
+Color Y
+Level 0
+Cost 0
+Power 2000
+Trait1 Music
+Trait2 Cerise Bouquet
+Auto: StartOpponentDrawPhase
+{
+	Question Mill 1?
+	If Yes
+	{
+		TargetTop Deck 1
+		Reveal
+		Mill 1
+		IfTarget NameContains Ginko
+		{
+			Question Put this character into your stock?
+			If Yes
+			{
+				TargetSelf
+				MoveCard Stock
+			}
+		}
+		Else
+		{
+			IfTarget NameContains Kozue
+			{
+				Question Put this character into your hand?
+				If Yes
+				{
+					TargetSelf
+					MoveCard Hand
+				}
+			}
+			Else
+			{
+				IfTarget NameContains Kaho
+				{
+					Question Move this character to an empty Front Row Slot?
+					If Yes
+					{
+						TargetSelf
+						MoveToOpenPosition True False
+					}
+				}
+			}
+		}
+	}
+}
+Text Auto: At the start of your opponent's turn, you may mill 1. If that card is a character with "Kaho" in its name, you may move this to an empty Front Row slot. If that card is a character with "Kozue" in its name, you may return this to hand. If that card is a character with "Ginko" in its name, you may send this to Stock.
+EndCard
+
 Character: LHS/W122-009
 Name Megumi Fujishima Bouncer
 Color Y
@@ -206,13 +346,13 @@ Cont: GiveAll
 }
 Text Cont: All of your other "Dream Believers, Kaho Hinoshita" gets +500 power and the following ability, "CONT - This cannot be targeted by your opponent's effects."
 *2000Assist
-Auto: OnPlay
+Auto: OnPlay|PlacedBy Aoku Haruka, Kozue Otomune
 {
 	SearchLocationForTargets Hand 0 1 IsCharacter && Compare ThatCardsLevel MyLevel OrLower
 	PlaceOnStage False True True False
 	GainPower 2000
 }
-Text Auto: When this is placed on stage from hand or by the ACT effect of {Unknown Kozue}, choose up to 1 character from your hand whose Level is equal or lower than your Level, place it on stage in any slot, and this turn, it gets +2000 power.
+Text Auto: When this is placed on stage from hand or by the ACT effect of "Aoku Haruka, Kozue Otomune", choose up to 1 character from your hand whose Level is equal or lower than your Level, place it on stage in any slot, and this turn, it gets +2000 power.
 EndCard
 
 Character: LHS/W122-011
@@ -278,7 +418,12 @@ Name Suisai Sekai
 *ChoiceClimax
 EndCard
 
-Character: LHS/W122-030
+Climax: LHS/W122-030
+Name Aoku Haruka
+*ChoiceClimax
+EndCard
+
+Character: LHS/W122-033
 Name Dream Believers, Rurino Osawa
 Color R
 Level 0
@@ -296,6 +441,44 @@ Auto: OnAttack
 }
 Text Auto: [Put the top card of your stock into your waiting room OR Put the top card of your deck into your clock] When this card attacks, you may pay the cost. If you do, during that attack, perform a trigger check 2 times on the trigger step.
 *RedLevel0Bomb
+EndCard
+
+Character: LHS/W122-034
+Name Dream Believers, Megumi Fujishima
+Color R
+Level 3
+Cost 2
+Power 10000
+Trigger Soul
+Soul 2
+Trait1 Music
+Trait2 Mira-Cra Park!
+Combo Do! Do! Do!
+Auto: PlacedBy Standby
+{
+	Heal
+}
+Text Auto: When this is placed on stage by the effect of Standby or the ACT effect of {Unknown Megumi}, you may heal 1.
+Auto: OnAttack
+{
+	If Climax Do! Do! Do! && StageContains 2 Other && HasTrait Music
+	{
+		PayCost 1 Discard 1 HasTrait Music
+		{
+			Burn 3
+			TargetTop Deck 2
+			If Compare TargetCount 2 OrMore
+			{
+					Reorder
+			}
+			Else
+			{
+					View
+			}
+		}
+	}
+}
+Text Auto: [(1) Discard 1 <Music> character] When this attacks, if you have "Do! Do! Do!" in your CX Area, and you have 2 or more other <Music> characters, you may pay cost. If you do, deal 3(?) damage to your opponent, then look at up to 2 cards from the top of your deck, and put them back on top in any order.
 EndCard
 
 Character: LHS/W122-035
@@ -346,44 +529,6 @@ Auto: OnAttack
 	}
 }
 Text Auto: CxCombo [Discard 2 cards] When this attacks, if you have "Tragic Drops" in your CX Area, you may pay cost. If you do, this turn, this gets +1500 power, and send the bottom 3 cards of your opponent's deck to Waiting Room, if there is no CX among them, deal 1 damage to your opponent 4 times
-EndCard
-
-Character: LHS/W122-034
-Name Dream Believers, Megumi Fujishima
-Color R
-Level 3
-Cost 2
-Power 10000
-Trigger Soul
-Soul 2
-Trait1 Music
-Trait2 Mira-Cra Park!
-Combo Do! Do! Do!
-Auto: PlacedBy Standby
-{
-	Heal
-}
-Text Auto: When this is placed on stage by the effect of Standby or the ACT effect of {Unknown Megumi}, you may heal 1.
-Auto: OnAttack
-{
-	If Climax Do! Do! Do! && StageContains 2 Other && HasTrait Music
-	{
-		PayCost 1 Discard 1 HasTrait Music
-		{
-			Burn 3
-			TargetTop Deck 2
-			If Compare TargetCount 2 OrMore
-			{
-					Reorder
-			}
-			Else
-			{
-					View
-			}
-		}
-	}
-}
-Text Auto: [(1) Discard 1 <Music> character] When this attacks, if you have "Do! Do! Do!" in your CX Area, and you have 2 or more other <Music> characters, you may pay cost. If you do, deal 3(?) damage to your opponent, then look at up to 2 cards from the top of your deck, and put them back on top in any order.
 EndCard
 
 Character: LHS/W122-038
@@ -760,6 +905,33 @@ Auto: OnPlay
 Text Auto: [Put 1 card from your hand into your waiting room] When this card is placed on stage from your hand, you may pay the cost. If you do, reveal the top card of your deck, choose a level X or lower character in your waiting room and return it to your hand. X is equal to the level of the card revealed this way.
 EndCard
 
+Character: LHS/W122-081
+Name Aoku Haruka/Flower, Ginko Momose
+Color B
+Level 0
+Cost 0
+Power 1000
+Trait1 Music
+Trait2 Cerise Bouquet
+Cont: GiveSelf
+{
+	If Not StageContains 1 Other
+	{
+		GainPower 3000
+		GainLevel 2
+	}
+}
+Text Cont: If you have no other characters, this gets +2 Level and +3000 power.
+Auto: OnSentFromStageToWaitingRoom
+{
+	PayCost Discard 1 Any
+	{
+		*Check4Add1Level1OrHigher
+	}
+}
+Text Auto: [Discard 1 card] When this is sent from Stage to Waiting Room, you may pay cost. If you do, look at up to 4 cards from the top of your deck, choose up to 1 Level 1 or higher card among them, show it to your opponent, add it to hand, and send the rest to Waiting Room.
+EndCard
+
 Character: LHS/W122-085
 Name Murozaki Lattice, Kosuzu Kachimachi
 Color B
@@ -793,6 +965,41 @@ Auto: StartClimaxPhase
 }
 Alarm
 Text Auto:  If this is on top of your Clock, at the start of your Climax Phase, choose 1 of your <Music> characters, this turn, it gains the following ability, "AUTO - When this card's battle opponent is Reversed, you may send that character to the bottom of your opponent's deck.
+EndCard
+
+Character: LHS/W122-090
+Name Reflection in the mirror, Ginko Momose
+Color B
+Level 1
+Cost 1
+Power 4000
+Trigger Soul
+Trait1 Music
+Trait2 Cerise Bouquet
+*LevelAssistTrait(Music)
+Act: RestSelf
+{
+	TargetLocation Stage
+	NarrowTargets HasTrait Music
+	ChooseCharacterFromTargets
+	GainEffect
+	{
+		Auto: OnAttack
+		{
+			If LocationContains Climax 1 HasTrigger Choice
+			{
+				GainPower 500
+			}
+			TargetLocation WaitingRoom
+	    NarrowTargets HasTrigger Choice
+			SetXValue TargetCount
+			MultiplyXValue 500
+			TargetSelf
+			GainPower X
+		}
+	}
+}
+Text Act: [Rest this] Choose 1 of your <Music> characters, this turn, it gains the following ability, "AUTO - When this attacks, this turn, this gets +X power. X equals the number of CXes with a Choice Trigger in your CX Area and Waiting Room times 500."
 EndCard
 
 Character: LHS/W122-094
@@ -982,6 +1189,26 @@ Name Fortune Movie
 *ChoiceClimax
 EndCard
 
+Character: LHS/W122-T11
+Name Reflection in the mirror, Kaho Hinoshita
+Color B
+Level 0
+Cost 0
+Power 500
+Trait1 Music
+Trait2 Cerise Bouquet
+Act: 1 SendSelf WaitingRoom
+{
+	If Compare MyLevel 2 OrHigher
+	{
+		SearchWaitingRoom IsCharacter && Compare ThatCardsLevel 2 OrHigher
+	}
+}
+ActivationRequirement CardPosition Stand
+Text Act: [(1) Send this Standing character to Waiting Room] If you are level 2 or higher, choose 1 level 2 or higher character in your Waiting Room, add it to hand.
+*Act1RestSelfDrawBrainstorm5
+EndCard
+
 Character: LHS/W122-T12
 Name Rainbow Chiffon, Tsuzuri Yugiri
 Color B
@@ -1019,6 +1246,24 @@ Auto: Encore SendFromWaitingRoomToBottom 1 Clock HasTrait Music
 {
 }
 Text Auto: ENCORE [Put 1 Music character from your waiting room at the bottom of your clock]
+EndCard
+
+Character: LHS/W122-T15
+Name Reflection in the mirror, Kozue Otomune
+Color B
+Level 2
+Cost 1
+Power 3500
+Trait1 Music
+Trait2 Cerise Bouquet
+*LevelAssist
+Act: RestSelf
+{
+	TargetLocation Stage
+	ChooseCharacterFromTargets
+	GainPower 2000
+}
+Text Act: Choose 1 of your characters, this turn, it gets +2000 power.
 EndCard
 
 Character: LHS/W122-T17
