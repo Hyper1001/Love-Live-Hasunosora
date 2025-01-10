@@ -204,7 +204,7 @@ Trait2 Cerise Bouquet
 Combo Aoku Haruka
 Auto: StartMyEncorePhase
 {
-	If Climax Aoku Haruka
+	If Climax Aoku Haruka && StageContains 2 Other && HasTrait Cerise Bouquet
 	{
 		PayCost SendClimax WaitingRoom
 		{
@@ -531,6 +531,24 @@ Auto: OnAttack
 Text Auto: CxCombo [Discard 2 cards] When this attacks, if you have "Tragic Drops" in your CX Area, you may pay cost. If you do, this turn, this gets +1500 power, and send the bottom 3 cards of your opponent's deck to Waiting Room, if there is no CX among them, deal 1 damage to your opponent 4 times
 EndCard
 
+Character: LHS/W122-036
+Name Ladybug, Sayaka Murano
+Color R
+Level 0
+Cost 0
+Power 2000
+Trait1 Music
+Trait2 DOLLCHESTRA
+Auto: OnPlay
+{
+	PayCost Discard 1 Any
+	{
+		SearchDeck NameEquals Dream Believers, Tsuzuri Yugiri
+	}
+}
+Text Auto: [Discard 1 <Music> character] When this is placed on stage from hand, you may pay cost. If you do, search your deck for up to 1 "Dream Believers, Tsuzuri Yugiri", show it to your opponent, add it to hand, and shuffle your deck afterwards.
+EndCard
+
 Character: LHS/W122-038
 Name Hime Anyoji Check5
 Color R
@@ -734,7 +752,26 @@ Cont: GiveSelf
 }
 Text Cont: If you have 2 or more other <Music> characters, this gets +2000 power.
 *HandEncore
-Text Auto: When this is placed on stage from hand, mill 1. If that card is a CX, send this to Stock.
+EndCard
+
+Character: LHS/W122-063
+Name Sparkly Spot, Kosuzu Kachimachi
+Color R
+Level 2
+Cost 1
+Power 3500
+Trait1 Music
+Trait2 DOLLCHESTRA
+Trigger Soul
+*LevelAssist
+Act: Resonate Dream Believers, Tsuzuri Yugiri
+{
+	TargetLocation Stage
+	ChooseCharacterFromTargets
+	GainPower 1000
+}
+Text Act: RESONATE [Reveal "Dream Believers, Tsuzuri Yugiri" from your hand, Rest this] Choose 1 of your characters, this turn, it gets +3000 power.
+
 EndCard
 
 Climax: LHS/W122-065
@@ -905,6 +942,70 @@ Auto: OnPlay
 Text Auto: [Put 1 card from your hand into your waiting room] When this card is placed on stage from your hand, you may pay the cost. If you do, reveal the top card of your deck, choose a level X or lower character in your waiting room and return it to your hand. X is equal to the level of the card revealed this way.
 EndCard
 
+Character: LHS/W122-076
+Name Ladybug, Kosuzu Kachimachi
+Color B
+Level 2
+Cost 1
+Trigger Soul
+Power 5500
+Trait1 Music
+Trait2 DOLLCHESTRA
+Combo Ladybug
+Cont: GiveSelf
+{
+	If MyTurn
+	{
+		GainPower 5000
+	}
+}
+Text Cont: During your turn, this gets +5000 power.
+Auto: OnAttack
+{
+	If Climax Ladybug && StageContains 2 Other && HasTrait Music
+	{
+		RevealUpTo Deck 4
+		ChooseCardsFromTargets 0 2 HasTrait Music
+		MoveCard Hand
+		PutTheRestIntoTheWaitingRoom
+	}
+}
+Text Auto: CxCombo When this attacks, if you have "Ladybug" in your CX Area, and you have 2 or more other <Music> characters, look at up to 4 cards from the top of your deck, choose up to 2 <Music> characters from among them, show them to your opponent, add them to hand, send the rest to Waiting Room.
+EndCard
+
+Character: LHS/W122-079
+Name Ladybug, Tsuzuri Yugiri
+Color B
+Level 3
+Cost 2
+Trigger Soul
+Power 10500
+Trait1 Music
+Trait2 DOLLCHESTRA
+Auto: OnPlay
+{
+	Question Would you like to mill your opponent 4?
+	If Yes
+	{
+		MillOpponent 4
+	}
+}
+Text Auto: When this is placed on stage from hand, you may send the top 4 cards of your opponent's deck to Waiting Room.
+Auto: OnPlay
+{
+	Question Would you like to perform the following effect? "Your opponent chooses 1 CX from their Waiting Room, and shuffles all other cards from their Waiting Room into their deck."
+	If Yes
+	{
+		OpponentMessage Choose a climax to keep in your waiting room.
+		OpponentSearchLocationForTargets WaitingRoom 1 1 IsClimax
+		ReverseTargets OpponentWaitingRoom
+		MoveCard OpponentDeck
+		ShuffleLocation OpponentDeck
+	}
+}
+Text Auto: When this is placed on stage from hand, you may perform the following effect, "Your opponent chooses 1 CX from their Waiting Room, and shuffles all other cards from their Waiting Room into their deck."
+EndCard
+
 Character: LHS/W122-081
 Name Aoku Haruka/Flower, Ginko Momose
 Color B
@@ -930,6 +1031,33 @@ Auto: OnSentFromStageToWaitingRoom
 	}
 }
 Text Auto: [Discard 1 card] When this is sent from Stage to Waiting Room, you may pay cost. If you do, look at up to 4 cards from the top of your deck, choose up to 1 Level 1 or higher card among them, show it to your opponent, add it to hand, and send the rest to Waiting Room.
+EndCard
+
+Character: LHS/W122-084
+Name Ladybug/Flower, Kosuzu Kachimachi
+Color B
+Level 1
+Cost 1
+Power 6000
+Trait1 Music
+Trait2 DOLLCHESTRA
+Cont: GiveSelf
+{
+	SetXValue MarkersUnderThis
+	MultiplyXValue 2000
+	GainPower X
+}
+Text Cont: For each Marker underneath this card, this gets +2000 power.
+Auto: OnOpponentReverse
+{
+	Question Look at the top card of your deck and put it under this card as a marker?
+	If Yes
+	{
+		PeekTop Deck
+		Marker_FaceDown
+	}
+}
+Text Auto: When this card's battle opponent is Reversed, you may look at the top card of your deck. If you do, place that card underneath this card face-down as a Marker.
 EndCard
 
 Character: LHS/W122-085
@@ -1026,6 +1154,11 @@ EndCard
 
 Climax: LHS/W122-097
 Name AWOKE
+*GateClimax
+EndCard
+
+Climax: LHS/W122-098
+Name Ladybug
 *GateClimax
 EndCard
 
@@ -1223,8 +1356,19 @@ Auto: OnPlay|OnAttack
 	ChooseCharacterFromTargets
 	GainPower 1500
 }
-EndCard
 Text Auto: When this is placed on stage from hand or attacks, if all of your characters are <Music>, choose 1 of your characters, this turn, it gets +1500 power.
+EndCard
+
+Character: LHS/W122-T13
+Name Sparkly Spot, Sayaka Murano
+Color B
+Level 1
+Cost 1
+Power 1000
+Trait1 Music
+Trait2 DOLLCHESTRA
+Backup 2500
+EndCard
 
 Character: LHS/W122-T14
 Name Rainbow Chiffon, Kosuzu Kachimachi
@@ -1264,6 +1408,26 @@ Act: RestSelf
 	GainPower 2000
 }
 Text Act: Choose 1 of your characters, this turn, it gets +2000 power.
+EndCard
+
+Character: LHS/W122-T16
+Name Sparkly Spot, Tsuzuri Yugiri
+Color B
+Level 2
+Cost 1
+Power 3500
+Trait1 Music
+Trait2 DOLLCHESTRA
+Cont: GiveSelf
+{
+	If MyTurn
+	{
+		SetXToNumberOfCharacters Other && HasTrait Music
+		MultiplyXValue 1500
+		GainPower X
+	}
+}
+Text Cont: During your turn, for each of your other <Music> characters, this gets +1500 power.
 EndCard
 
 Character: LHS/W122-T17
