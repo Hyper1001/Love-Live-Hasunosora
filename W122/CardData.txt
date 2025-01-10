@@ -611,7 +611,7 @@ Auto: OnPlay
 	SearchDeck HasTrait Music
 }
 Text Auto: When this is placed on stage from hand, search your deck for up to 1 <Music> character, show it to your opponent, add it to hand, and shuffle your deck afterwards.
-Act: 2 Discard 1 Any
+Act: 2 Discard 1 Any RestSelf
 {
 	Message Choose up to 1 card to put into your hand
 	SearchLocationForTargets Clock 0 1 Any
