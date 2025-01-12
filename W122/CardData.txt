@@ -102,17 +102,14 @@ Auto: OnAttack
 					{
 						Auto: OnReverseOpponent
 						{
-							If Climax KahoCX
+							TargetBattleOpponent
+							IfThatCard OnStage
 							{
-								TargetBattleOpponent
-								IfThatCard OnStage
+								Question Put the battle opponent into the opponent's clock?
+								If Yes
 								{
-									Question Put the battle opponent into the opponent's clock?
-									If Yes
-									{
-										TargetBattleOpponent
-										MoveCard OpponentClock
-									}
+									TargetBattleOpponent
+									MoveCard OpponentClock
 								}
 							}
 						}
@@ -216,7 +213,7 @@ Auto: StartMyEncorePhase
 		}
 	}
 }
-Text Auto: CxCombo [Send the Choice CX from your CX Area to Waiting Room] At the start of your Encore Step, if you have 2 or more other <Cerise Bouquet> characters, you may pay cost. If you do, look at up to 3 cards from the top of your deck, choose up to 2 <Cerise Bouquet> character from among them, show them to your opponent, add them to hand, send the rest to Waiting Room.
+Text Auto: CxCombo [Send "Aoku Haruka" from your CX Area to Waiting Room] At the start of your Encore Step, if you have 2 or more other <Cerise Bouquet> characters, you may pay cost. If you do, look at up to 3 cards from the top of your deck, choose up to 2 <Cerise Bouquet> character from among them, show them to your opponent, add them to hand, send the rest to Waiting Room.
 Act: RestSelf
 {
 	TargetLocation Stage
@@ -254,8 +251,6 @@ Auto: StartOpponentDrawPhase
 	Question Mill 1?
 	If Yes
 	{
-		TargetTop Deck 1
-		Reveal
 		Mill 1
 		IfTarget NameContains Ginko
 		{
@@ -478,7 +473,7 @@ Auto: OnAttack
 		}
 	}
 }
-Text Auto: [(1) Discard 1 <Music> character] When this attacks, if you have "Do! Do! Do!" in your CX Area, and you have 2 or more other <Music> characters, you may pay cost. If you do, deal 3(?) damage to your opponent, then look at up to 2 cards from the top of your deck, and put them back on top in any order.
+Text Auto: [(1) Discard 1 <Music> character] When this attacks, if you have "Do! Do! Do!" in your CX Area, and you have 2 or more other <Music> characters, you may pay cost. If you do, deal 3 damage to your opponent, then look at up to 2 cards from the top of your deck, and put them back on top in any order.
 EndCard
 
 Character: LHS/W122-035
@@ -1299,14 +1294,15 @@ Trait1 Music
 Trait2 Cerise Bouquet
 Auto: OnPlay
 {
-	If StageContains 4 Other && HasTrait hololive
+	If StageContains 4 Other && HasTrait Music
 	{
 		Message Choose up to 1 character to put into your stock.
-		SearchLocationForTargets WaitingRoom 0 1 HasTrait Music
+		SearchLocationForTargets WaitingRoom 0 1 HasTrait Music Auto:
 		RevealTargets
 		MoveCard Stock
 	}
 }
+Text Auto: When this is placed on stage from hand, if you have 4 or more other <Music> characters, choose 1 <Music> character in your Waiting Room, you may send it to Stock.
 Auto: OnPlay
 {
 	PayCost 1
@@ -1407,7 +1403,7 @@ Act: RestSelf
 	ChooseCharacterFromTargets
 	GainPower 2000
 }
-Text Act: Choose 1 of your characters, this turn, it gets +2000 power.
+Text Act: [Rest this] Choose 1 of your characters, this turn, it gets +2000 power.
 EndCard
 
 Character: LHS/W122-T16
