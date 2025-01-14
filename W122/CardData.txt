@@ -373,6 +373,29 @@ Text Cont: This card gets +1000 power for each other 《Music》 character in yo
 *StockHealer
 EndCard
 
+Character: LHS/W122-015
+Name Mira-Creation/Flower, Hime Anyoji
+Color Y
+Level 0
+Cost 0
+Power 3500
+Trait1 Music
+Trait2 Mira-Cra Park!
+Cont: GiveAll
+{
+	*CannotSideAttack
+}
+Text Cont: All of your characters gain the following ability, "CONT - This cannot side attack."
+Auto: OnPlay
+{
+	PayCost Discard 1 HasTrait Music
+	{
+		DrawCard
+	}
+}
+Text Auto: [Discard 1 <Music> characters] When this is placed on stage from hand, you may pay cost. If you do, draw 1 card.
+EndCard
+
 Character: LHS/W122-023
 Name Murozaki Lattice, Kozue Otomune
 Color Y
@@ -544,6 +567,35 @@ Auto: OnPlay
 Text Auto: [Discard 1 <Music> character] When this is placed on stage from hand, you may pay cost. If you do, search your deck for up to 1 "Dream Believers, Tsuzuri Yugiri", show it to your opponent, add it to hand, and shuffle your deck afterwards.
 EndCard
 
+Character: LHS/W122-037
+Name Mira-Creation, Hime Anyoji
+Color R
+Level 0
+Cost 0
+Power 2500
+Trait1 Music
+Trait2 Mira-Cra Park!
+Combo Mira-Creation
+Auto: OnClimaxPlay
+{
+	If Climax Mira-Creation
+	{
+		PayCost SendSelf Hand
+		{
+			Message Choose up to 2 <Music> characters to put into the waiting room.
+			SearchLocationForTargets Deck 0 2 HasTrait Music
+			RevealTargets
+			MoveCards WaitingRoom
+			ShuffleLocation Deck
+			TargetLocation Stage
+			ChooseCharacterFromTargets
+			GainPower 1000
+		}
+	}
+}
+Text Auto: CxCombo [Return this to hand] When the "Mira-Creation" is placed in your CX Area, you may pay cost. If you do, search your deck for up to 2 <Music> characters, send them to Waiting Room, shuffle your deck afterwards, then choose 1 of your characters, this turn, it gets +1000 power.
+EndCard
+
 Character: LHS/W122-038
 Name Hime Anyoji Check5
 Color R
@@ -592,11 +644,91 @@ Auto: OnOpponentReverse
 Text Auto: RESONATE [(1) Reveal "Dream Believers, Tsuzuri Yugiri" from your hand] During the turn this was placed on stage from hand, when this card's battle opponent is Reversed, you may pay cost. If you do, search your deck for up to 1 <Music> character, show it to your opponent, add it to hand, and shuffle your deck afterwards.
 EndCard
 
+Character: LHS/W122-040
+Name Mira-Creation, Megumi Fujishima
+Color R
+Level 1
+Cost 1
+Power 4000
+Trigger Soul
+Trait1 Music
+Trait2 Mira-Cra Park!
+Auto: OnTriggerCheck
+{
+	IfOther HasTrigger Soul
+	{
+		Question Have attacking character gain +3000 power and -1 Soul?
+		If Yes
+		{
+			TargetMyCharacterInBattle
+			GainPower 3000
+			LoseSoul 1
+		}
+	}
+}
+Text Auto: When you trigger a card with a Soul Trigger, choose up to 1 of your attacking characters, this turn, it gets +3000 power and -1 Soul.
+Auto: OnTriggerCheck
+{
+	TargetLocation CenterStage
+	NarrowTargets Other && NameEquals Mira-Creation, Megumi Fujishima
+	IfOther HasTrigger DoubleSoul && Not HasTarget
+	{
+		Question Have attacking character lose 2 Soul? If you do, choose 1 <Mira-Cra Park!> character in your Waiting Room, send it to the bottom of your Stock.
+		If Yes
+		{
+			TargetMyCharacterInBattle
+			LoseSoul 2
+			SearchLocationForTargets Deck 0 1 HasTrait Mira-Cra Park!
+			MoveCard BottomOfStock
+		}
+	}
+}
+Text Auto: When you trigger a CX with 2 Soul Triggers, if you do not have another "Mira-Creation, Megumi Fujishima", choose up to 1 of your attacking characters, this turn it gets -2 souls. If you choose 1, choose 1 <Mira-Cra Park!> character in your Waiting Room, send it to the bottom of your Stock.
+Act: 2 RestSelf
+{
+	SearchDeck HasTrait Mira-Cra Park!
+}
+Text Act:  [(2) Rest this] Search your deck for up to 1 <Mira-Cra Park!> character, show it to your opponent, add it to hand, and shuffle your deck afterwards.
+EndCard
+
+Character: LHS/W122-042
+Name Mira-Creation, Rurino Osawa
+Color R
+Level 2
+Cost 2
+Power 8500
+Trigger Soul
+Soul 2
+Trait1 Music
+Trait2 Mira-Cra Park!
+Auto: StartAttackPhase
+{
+	PayCost SendClimax WaitingRoom
+	{
+		TargetSelf
+		Stand
+		UntilEndOfOpponentsTurn
+		GainEffect
+		{
+			Auto: StartOpponentEncorePhase
+			{
+				TargetSelf
+				Movecard WaitingRoom
+			}
+			Text Auto: At the start of your opponent's Encore Step, send this card to the Waiting Room.
+		}
+	}
+}
+Text Auto: [Send 1 CX in your CX Area to Waiting Room] At the start of your Attack Phase, you may pay cost. If you do, Stand this, and at the start of your opponent's Encore Step, send this to Waiting Room.
+EndCard
+
 Character: LHS/W122-043
 Name Rurino Osawa AssistHeal
 Color R
 Level 3
 Cost 2
+Trigger Soul
+Soul 2
 Power 7000
 Trait1 Music
 Trait2 Mira-Cra Park!
@@ -730,6 +862,36 @@ Auto: OnPlay
 Text Auto: When this is placed on stage from hand, mill 1. If that card is a CX, send this to Stock.
 EndCard
 
+Character: LHS/W122-060
+Name Identity, Hime Anyoji
+Color R
+Level 1
+Cost 0
+Power 3000
+Trigger Soul
+Trait1 Music
+Trait2 Mira-Cra Park!
+Auto: OnPlay
+{
+	TargetSelf
+	GainPower 3000
+}
+Text Auto: When this is placed on stage from hand, this turn, this gets +3000 power.
+Auto: OnPlay
+{
+	If StageContains 2 Other && HasTrait Music
+	{
+		Question Draw 1 card? If you do, discard 1 card.
+		If Yes
+		{
+			DrawCard
+			Discard 1 Any
+		}
+	}
+}
+Text Auto: When this is placed on stage from hand, if you have 2 or more other <Music> characters, you may draw 1 card. If you do, discard 1 card.
+EndCard
+
 Character: LHS/W122-062
 Name Murozaki Lattice, Megumi Fujishima
 Color R
@@ -777,6 +939,11 @@ EndCard
 Climax: LHS/W122-066
 Name Tragic Drops
 *DoorClimax
+EndCard
+
+Climax: LHS/W122-067
+Name Mira-Creation
+*StandbyClimax
 EndCard
 
 Character: LHS/W122-070
@@ -1157,6 +1324,36 @@ Name Ladybug
 *GateClimax
 EndCard
 
+Climax: LHS/W122-101
+Name Testing 2Soul
+Color R
+*2SoulClimax
+EndCard
+
+Character: LHS/W122-T01
+Name Identity, Rurino Osawa
+Color Y
+Level 0
+Cost 0
+Power 1000
+Trait1 Music
+Trait2 Mira-Cra Park!
+Cont: GiveAll
+{
+	If NameEquals Identity, Megumi Fujishima && Other
+	{
+		GainPower 1500
+		GainEffect
+		{
+			*HandEncore
+		}
+		Text Cont: This character gains +1500 power from the effect of "Identity, Rurino Osawa"
+	}
+}
+Text Cont: All of your other "Identity, Megumi Fujishima" gets +1500 power and "AUTO - ENCORE [Discard 1 character]"
+*BondDiscard(Identity\, Megumi Fujishima)
+EndCard
+
 Character: LHS/W122-T02
 Name Rainbow Chiffon, Hime Anyoji
 Color Y
@@ -1248,6 +1445,16 @@ Auto: OnAttack
 	}
 }
 Text Auto: CxCombo When this Attacks, if you have "Fortune Movie" in your CX Area, and you have another <Music> character, mill 2, then choose up to 1 Level X or lower <Music> character from your Waiting Room, and add it to hand. X equals the sum of Levels of cards milled by this effect.
+EndCard
+
+Character: LHS/W122-T06
+Name Identity, Megumi Fujishima
+Color Y
+Level 1
+Cost 0
+Power 5500
+Trait1 Music
+Trait2 Mira-Cra! Park!
 EndCard
 
 Character: LHS/W122-T07
