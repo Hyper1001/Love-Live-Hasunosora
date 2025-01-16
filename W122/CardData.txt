@@ -396,6 +396,85 @@ Auto: OnPlay
 Text Auto: [Discard 1 <Music> characters] When this is placed on stage from hand, you may pay cost. If you do, draw 1 card.
 EndCard
 
+Character: LHS/W122-012
+Name PASSION!!!!!!, Megumi Fujishima
+Color Y
+Level 0
+Cost 0
+Power 2500
+Trait1 Music
+Trait2 Mira-Cra Park!
+Auto: OnPlay
+{
+	Message Choose up to 1 <Mira-Cra Park!> character to put into the waiting room.
+	SearchLocationForTargets Deck 0 1 HasTrait Music
+	RevealTargets
+	MoveCards WaitingRoom
+	ShuffleLocation Deck
+}
+Text Auto: When this is placed on stage from hand, you may perform the following effect, "Search your deck for up to 1 <Mira-Cra Park!> character, send it to Waiting Room, and shuffle your deck afterwards."
+Auto: OnCancel
+{
+	If InBattle && OnStage
+	{
+		Question Return this character to your hand?
+		If Yes
+		{
+			TargetSelf
+			MoveCard Hand
+		}
+	}
+}
+Text Auto: During this card's battle, when damage you receive is cancelled, you may return this card to your hand.
+EndCard
+
+Character: LHS/W122-018
+Name Orihime Storybook, Rurino Osawa
+Color Y
+Level 1
+Cost 1
+Power 5500
+Trait1 Music
+Trait2 Mira-Cra Park!
+Cont: GiveSelf
+{
+	If MyTurn
+	{
+		*GainPowerForEachOther(1000,Music)
+	}
+}
+Text Cont: During your turn, for each of your other <Music> characters, this gets +1000 power.
+Auto: OnSentFromStageToWaitingRoom
+{
+	PayCost 1
+	{
+		SearchWaitingRoom NameEquals Mira-Creation/Flower, Hime Anyoji
+	}
+}
+Text Auto:[(1)] When this is sent from Stage to Waiting Room, you may pay cost. If you do, choose 1 {U 0/0 Hime Drop Draw} in your Waiting Room, add it to hand.
+EndCard
+
+Character: LHS/W122-019
+Name Orihime Storybook, Kaho Hinoshita
+Color Y
+Level 2
+Cost 1
+Trigger Soul
+Power 2500
+Soul 1
+Trait1 Music
+Trait2 Cerise Bouquet
+Auto: OnUseThisCardsBackup
+{
+	PayCost 2 Send 1 WaitingRoom Any
+	{
+		*SendEarlyPlayToWaitingRoom
+	}
+}
+Text Auto: [(2) Put 1 character from your stage into your waiting room] When you use this card's "BACKUP", you may pay the cost. If you do, choose 1 of your opponent's characters with level higher than your opponent's level, and put it into your opponent's waiting room.
+Backup 2500
+EndCard
+
 Character: LHS/W122-023
 Name Murozaki Lattice, Kozue Otomune
 Color Y
@@ -751,6 +830,31 @@ Act: 2 Discard 1 Any RestSelf
 Text Cont: [(2) Discard 1 card, Rest this] Choose 1 card in your Clock, add it to hand.
 EndCard
 
+Character: LHS/W122-048
+Name Orihime Storybook, Sayaka Murano
+Color R
+Level 1
+Cost 0
+Power 3000
+Trait1 Music
+Trait2 DOLLCHESTRA
+Auto: OnPlay|OnAttack
+{
+	PayCost Discard 1 IsClimax
+	{
+		SearchWaitingRoom HasTrait Music
+	}
+}
+Text Auto: [Discard 1 CX] When this is placed on stage from hand or attacks, you may pay cost. If you do, choose 1 <Music> character from your Waiting Room, and add it to hand.
+Auto: OnOtherAttacks
+{
+	SetXToNumberOfCharacters
+	MultiplyXValue 500
+	GainPower X
+}
+Text Auto: When your other <Music> character attacks, this turn, this gets +X power. X equals the number of your other <Music> characters times 500.
+EndCard
+
 Character: LHS/W122-054
 Name Murozaki Lattice, Sayaka Murano
 Color R
@@ -796,6 +900,27 @@ Auto: OnPlay
 	}
 }
 Text Auto: [Discard 1 card] When this is placed on stage from hand, you may pay cost. If you do, search your deck for up to 1 "Murozaki Lattice, Tsuzuri Yugiri", place it on stage in any slot, and shuffle your deck afterwards.
+EndCard
+
+Character: LHS/W122-051
+Name PASSION!!!!!!, Tsuzuri Yugiri
+Color R
+Level 2
+Cost 1
+Power 1000
+Trait1 Music
+Trait2 Mira-Cra Park!
+Auto: OnUseThisCardsBackup
+{
+	TargetLocation Stage
+	ChooseCharacterFromTargets
+	GainEffect
+	{
+		*BlueEarlyPlayBomb
+	}
+}
+Text Auto: When you use this card's BACKUP, choose 1 of your characters, this turn, it gains the following ability, "AUTO - When this is Reversed, if the battle opponent's Level is higher than your opponent's Level, you may send that character to the bottom of your opponent's deck. "
+Backup 2500
 EndCard
 
 Character: LHS/W122-056
@@ -1195,6 +1320,29 @@ Auto: OnSentFromStageToWaitingRoom
 Text Auto: [Discard 1 card] When this is sent from Stage to Waiting Room, you may pay cost. If you do, look at up to 4 cards from the top of your deck, choose up to 1 Level 1 or higher card among them, show it to your opponent, add it to hand, and send the rest to Waiting Room.
 EndCard
 
+Character: LHS/W122-082
+Name PASSION!!!!!!, Kozue Otomune
+Color B
+Level 0
+Cost 0
+Power 1500
+Trait1 Music
+Trait2 Cerise Bouquet
+Cont: GiveSelf
+{
+	If Compare CardsInHand 5 OrMore
+	{
+		GainPower 2000
+	}
+}
+Text Cont: If you have 5 or more hand, this gets +2000 power.
+Act: Discard 1 Any SendSelf WaitingRoom
+{
+    SearchWaitingRoom IsCharacter && HasTrait Music
+}
+Text Act: [Discard 1 card, Send this to Waiting Room] Choose 1 <Music> character in your Waiting Room, add it to hand.
+EndCard
+
 Character: LHS/W122-084
 Name Ladybug/Flower, Kosuzu Kachimachi
 Color B
@@ -1322,12 +1470,6 @@ EndCard
 Climax: LHS/W122-098
 Name Ladybug
 *GateClimax
-EndCard
-
-Climax: LHS/W122-101
-Name Testing 2Soul
-Color R
-*2SoulClimax
 EndCard
 
 Character: LHS/W122-T01
@@ -1520,6 +1662,18 @@ Auto: OnPlay
 Text Auto: [(1)] When this is placed on stage from hand, you may pay cost. If you do, choose 1 climax from your waiting room, and add it to hand.
 EndCard
 
+Event: LHS/W122-T09
+Name Hasunosora Girls' High School
+Color Y
+Level 1
+Cost 1
+Effect:
+{
+	SearchDeck IsClimax
+}
+Text Search your deck for up to 1 CX, show it to your opponent, add it to hand, and shuffle your deck afterwards.
+EndCard
+
 Climax: LHS/W122-T10
 Name Fortune Movie
 *ChoiceClimax
@@ -1672,4 +1826,10 @@ EndCard
 Climax: LHS/W122-T18
 Name Tsukimakase
 *GateClimax
+EndCard
+
+Climax: LHS/W122-T19
+Name Link to the FUTURE
+Color B
+*2SoulClimax
 EndCard
