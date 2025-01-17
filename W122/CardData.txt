@@ -428,6 +428,24 @@ Auto: OnCancel
 Text Auto: During this card's battle, when damage you receive is cancelled, you may return this card to your hand.
 EndCard
 
+Character: LHS/W122-013
+Name PASSION!!!!!!, Ginko Momose
+Color Y
+Level 0
+Cost 0
+Power 2500
+Trait1 Music
+Trait2 Cerise Bouquet
+Auto: OnPlay
+{
+	TargetLocation OpponentStage
+	ChooseCharacterFromTargets Choose a character to remove a trait from
+	RemoveTrait
+}
+Text Auto: When this is placed on stage from hand, choose 1 of your opponent's characters and 1 of its Traits, this turn, that character loses that Trait.
+*DropSearch(Music)
+EndCard
+
 Character: LHS/W122-018
 Name Orihime Storybook, Rurino Osawa
 Color Y
@@ -828,6 +846,62 @@ Act: 2 Discard 1 Any RestSelf
 	}
 }
 Text Cont: [(2) Discard 1 card, Rest this] Choose 1 card in your Clock, add it to hand.
+EndCard
+
+Character: LHS/W122-045
+Name PASSION!!!!!!, Hime Anyoji
+Color R
+Level 0
+Cost 0
+Power 1500
+Trait1 Music
+Trait2 Mira-Cra Park!
+Auto: OnPlay
+{
+	TargetTop Deck 2
+	If Compare TargetCount 2 OrMore
+	{
+		Reorder
+	}
+	Else
+	{
+		View
+	}
+}
+Text Auto: When this is placed on stage from hand, look at up to 2 cards from the top of your deck, and put them back on top in any order.
+*ClimaxExchange
+EndCard
+
+Character: LHS/W122-047
+Name PASSION!!!!!!, Kosuzu Kachimachi
+Color R
+Level 0
+Cost 0
+Power 2000
+Trait1 Music
+Trait2 DOLLCHESTRA
+Auto: OnPlay
+{
+	PayCost Send 1 WaitingRoom Other && HasTrait Music
+	{
+		Message Choose up to 1 climax in your deck and return it to your hand
+		SearchLocationForTargets Deck 0 1 IsClimax
+		If HasTarget
+		{
+			RevealTargets
+			MoveCard Hand
+			SearchLocationForTargets Hand 1 1 IsClimax
+			Reveal
+			MoveCard Deck
+			ShuffleLocation Deck
+		}
+		Else
+		{
+			ShuffleLocation Deck
+		}
+	}
+}
+Text Auto: [Send 1 of your other characters on stage to Waiting Room] When this is placed on stage from hand, you may pay cost. If you do, search your deck for up to 1 CX, show it to your opponent, then choose up to 1 CX in your hand, show it to your opponent, swap them, and shuffle your deck afterwards.
 EndCard
 
 Character: LHS/W122-048
