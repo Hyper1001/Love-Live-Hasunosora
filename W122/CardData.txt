@@ -181,13 +181,36 @@ Cont: GiveSelf
 		{
 			Act: 2 SendSelf WaitingRoom
 			{
-				SearchLocationForTargets WaitingRoom 1 1 NameEquals Kozue Otomune FreePlay
+				SearchLocationForTargets WaitingRoom 1 1 NameEquals A Story Achieved Together, Kozue Otomune
 				PlaceOnStage false true true false
 			}
 		}
 	}
 }
-Text Act: [(2) Send this to Waiting Room] If you are Level 3 or higher, choose 1 "Kozue Otomune FreePlay" in your Waiting Room, place it on stage in this card's former slot.
+Text Act: [(2) Send this to Waiting Room] If you are Level 3 or higher, choose 1 "A Story Achieved Together, Kozue Otomune" in your Waiting Room, place it on stage in this card's former slot.
+EndCard
+
+Character: LHS/W122-006
+Name Setsubun -Charm-, Kozue Otomune
+Color Y
+Level 0
+Cost 0
+Power 1000
+Trait1 Music
+Trait2 Cerise Bouquet
+ConditionalTrigger Choice LocationContains Climax 1 HasTrigger Choice
+Text Cont: If a climax with a Choice trigger is in your climax area, this card in any area gains Choice trigger.
+Cont: GiveSelf
+{
+	If AllYourCharacters HasTrait Music
+	{
+		GainEffect
+		{
+			*YellowLevel0Bomb
+		}
+	}
+}
+Text Auto: When this is Reversed, if all of your characters are <Music>, and the battle opponent's Level is 0 or lower, you may send that character to Stock. If you do, put the bottom card of your opponent's Stock into Waiting Room.
 EndCard
 
 Character: LHS/W122-007
@@ -291,7 +314,7 @@ Text Auto: At the start of your opponent's turn, you may mill 1. If that card is
 EndCard
 
 Character: LHS/W122-009
-Name Megumi Fujishima Bouncer
+Name A Story Achieved Together, Megumi Fujishima
 Color Y
 Level 2
 Cost 2
@@ -319,7 +342,7 @@ Text Act: [Send this to Stock] Choose 1 of your opponent's characters, return it
 EndCard
 
 Character: LHS/W122-010
-Name Kozue Otomune FreePlay
+Name A Story Achieved Together, Kozue Otomune
 Color Y
 Level 3
 Cost 2
@@ -351,7 +374,7 @@ Text Auto: When this is placed on stage from hand or by the ACT effect of "Aoku 
 EndCard
 
 Character: LHS/W122-011
-Name Ginko Momose StockHeal
+Name A Story Achieved Together, Ginko Momose
 Color Y
 Level 3
 Cost 2
@@ -493,6 +516,31 @@ Text Auto: [(2) Put 1 character from your stage into your waiting room] When you
 Backup 2500
 EndCard
 
+Character: LHS/W122-021
+Name Bloom the smile, Bloom the dream!, Ginko Momose
+Color Y
+Level 2
+Cost 1
+Trigger Soul
+Power 2500
+Soul 1
+Trait1 Music
+Trait2 Cerise Bouquet
+*Level3Assist
+Auto: OnPlay
+{
+	If LocationContainsOrLess Deck 6
+	{
+		Question Return return all cards in your waiting room to your deck?
+		If Yes
+		{
+			Refresh
+		}
+	}
+}
+Text Auto: When this is placed on stage from hand, If you have 6 or less cards in your deck, you may shuffle all cards from your Waiting Room into your deck.
+EndCard
+
 Character: LHS/W122-023
 Name Murozaki Lattice, Kozue Otomune
 Color Y
@@ -526,6 +574,23 @@ Auto: OnPlay
 }
 Text Auto: When this is placed on stage from hand, if you have 4 or more other <Music> characters, choose 1 <Music> character in your Waiting Room, you may send it to Stock.
 *YellowEarlyPlayBomb
+EndCard
+
+Event: LHS/W122-028
+Name New Year's Greetings -Food-, Kaho Hinoshita
+Color Y
+Level 1
+Cost 0
+Requirement StageContains 1 HasTrait Music
+Counter
+Effect:
+{
+	Brainstorm 2
+	TargetBrainstormed
+	SetXValue TotalLevel
+	SearchWaitingRoom HasTrait Music && Compare ThatCardsLevel X OrLower
+}
+Text Counter: Flip over the top 2 cards of your deck, then send them to Waiting Room. Choose up to 1 Level X or lower <Music> character from your Waiting Room, add it to hand. X equals the sum of Levels of cards sent to Waiting Room by this effect.
 EndCard
 
 Climax: LHS/W122-029
@@ -694,7 +759,7 @@ Text Auto: CxCombo [Return this to hand] When the "Mira-Creation" is placed in y
 EndCard
 
 Character: LHS/W122-038
-Name Hime Anyoji Check5
+Name A Story Achieved Together, Hime Anyoji
 Color R
 Level 1
 Cost 0
@@ -716,7 +781,7 @@ Text Auto: [Discard 1 card] When this attacks, if you don't have a CX in your CX
 EndCard
 
 Character: LHS/W122-039
-Name Tsuzuri Yugiri ReverseSearch
+Name A Story Achieved Together, Tsuzuri Yugiri
 Color R
 Level 1
 Cost 0
@@ -820,7 +885,7 @@ Text Auto: [Send 1 CX in your CX Area to Waiting Room] At the start of your Atta
 EndCard
 
 Character: LHS/W122-043
-Name Rurino Osawa AssistHeal
+Name A Story Achieved Together, Rurino Osawa
 Color R
 Level 3
 Cost 2
@@ -1146,7 +1211,7 @@ Name Mira-Creation
 EndCard
 
 Character: LHS/W122-070
-Name Kaho Hinoshita Riki
+Name A Story Achieved Together, Kaho Hinoshita
 Color B
 Level 0
 Cost 0
@@ -1250,7 +1315,7 @@ Text Auto: When this is placed on stage from hand, if you have 2 or more other <
 EndCard
 
 Character: LHS/W122-074
-Name Sayaka Murano Brainstorm
+Name A Story Achieved Together, Sayaka Murano
 Color B
 Level 0
 Cost 0
@@ -1281,7 +1346,7 @@ Text Auto: RESONATE [Reveal "Dream Believers, Tsuzuri Yugiri" from your hand] At
 EndCard
 
 Character: LHS/W122-075
-Name Kosuzu Kachimachi Riko
+Name A Story Achieved Together, Kosuzu Kachimachi
 Color B
 Level 0
 Cost 0
@@ -1617,7 +1682,7 @@ Cont: GiveSelf
 		}
 	}
 }
-Text Cont: If all of your characters are <Music> this gets +1500 power and the following ability, "AUTO - When this card's battle opponent is Reversed, choose 1 <Music> character in your Waiting Room, add it to hand, then discard 1 card."
+Text Cont: If all of your characters are <Music>, this gets +1500 power and the following ability, "AUTO - When this card's battle opponent is Reversed, choose 1 <Music> character in your Waiting Room, add it to hand, then discard 1 card."
 EndCard
 
 Character: LHS/W122-T04
@@ -1720,7 +1785,7 @@ Auto: OnPlay
 	If StageContains 4 Other && HasTrait Music
 	{
 		Message Choose up to 1 character to put into your stock.
-		SearchLocationForTargets WaitingRoom 0 1 HasTrait Music Auto:
+		SearchLocationForTargets WaitingRoom 0 1 HasTrait Music
 		RevealTargets
 		MoveCard Stock
 	}
