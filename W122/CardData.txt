@@ -1314,6 +1314,29 @@ Auto: OnPlay
 Text Auto: When this is placed on stage from hand, if you have 2 or more other <Music> characters, this turn, this gets +3000 power and the following ability, "AUTO - When this card's battle opponent is Reversed, you may send that character to the bottom of your opponent's deck."
 EndCard
 
+Character: LHS/W122-073
+Name A Story Achieved Together, Kosuzu Kachimachi
+Color B
+Level 0
+Cost 0
+Power 1000
+Trait1 Music
+Trait2 DOLLCHESTRA
+Auto: OnPlay
+{
+	PayCost Discard 1 Any
+	{
+		TargetTop Deck 1
+		Reveal
+		SetXValue TargetCardsLevel
+		SearchLocationForTargets WaitingRoom 1 1 IsCharacter && Compare ThatCardsLevel X OrLess
+		RevealTargets
+		MoveCard Hand
+	}
+}
+Text Auto: [Put 1 card from your hand into your waiting room] When this card is placed on stage from your hand, you may pay the cost. If you do, reveal the top card of your deck, choose a level X or lower character in your waiting room and return it to your hand. X is equal to the level of the card revealed this way.
+EndCard
+
 Character: LHS/W122-074
 Name A Story Achieved Together, Sayaka Murano
 Color B
@@ -1346,26 +1369,28 @@ Text Auto: RESONATE [Reveal "Dream Believers, Tsuzuri Yugiri" from your hand] At
 EndCard
 
 Character: LHS/W122-075
-Name A Story Achieved Together, Kosuzu Kachimachi
+Name Setsubun -Demon-, Tsuzuri Yugiri
 Color B
-Level 0
+Level 1
 Cost 0
-Power 1000
+Power 1500
 Trait1 Music
 Trait2 DOLLCHESTRA
-Auto: OnPlay
+Auto: OnUseThisCardsBackup
 {
-	PayCost Discard 1 Any
-	{
-		TargetTop Deck 1
-		Reveal
-		SetXValue TargetCardsLevel
-		SearchLocationForTargets WaitingRoom 1 1 IsCharacter && Compare ThatCardsLevel X OrLess
-		RevealTargets
-		MoveCard Hand
-	}
+    PayCost Discard 1 IsClimax && HasTrigger Door
+    {
+        TargetLocation OpponentStage
+        NarrowTargets CanBeChosen && EarlyPlay
+        If HasTarget
+        {
+            ChooseCharacterFromTargets Choose 1 of your Opponent's Characters whose Level is higher than your Opponent and return it to their hand.
+            MoveCard Hand
+        }
+    }
 }
-Text Auto: [Put 1 card from your hand into your waiting room] When this card is placed on stage from your hand, you may pay the cost. If you do, reveal the top card of your deck, choose a level X or lower character in your waiting room and return it to your hand. X is equal to the level of the card revealed this way.
+Text Auto: [Discard 1 CX with a Door Trigger] When you use this card's BACKUP, you may pay cost. If you do, choose 1 of your opponent's characters whose Level is higher than your opponent's Level, and return it to hand.
+Backup 1000
 EndCard
 
 Character: LHS/W122-076
@@ -1480,6 +1505,23 @@ Act: Discard 1 Any SendSelf WaitingRoom
     SearchWaitingRoom IsCharacter && HasTrait Music
 }
 Text Act: [Discard 1 card, Send this to Waiting Room] Choose 1 <Music> character in your Waiting Room, add it to hand.
+EndCard
+
+Character: LHS/W122-083
+Name Bloom the smile, Bloom the dream!, Kosuzu Kachimachi
+Color B
+Level 1
+Cost 0
+Power 3500
+Trait1 Music
+Trait2 DOLLCHESTRA
+Auto: OnClimaxPlay
+{
+	TargetSelf
+	GainPower 3000
+}
+Text Auto: When a CX is placed in your CX Area, this turn, this gets +3000 power.
+*OnAttackPay1ToDoubleTrigger
 EndCard
 
 Character: LHS/W122-084
@@ -1599,6 +1641,23 @@ Auto: OnAttack
 	}
 }
 Text Auto: When this attacks, if the Level of the character across from this is 3 or higher, this turn, this gets +6000 power and +2 Souls.
+EndCard
+
+Event: LHS/W122-096
+Name New Year's Greetings -Dance-, Sayaka Murano
+Color B
+Level 2
+Cost 1
+Requirement StageContains 1 HasTrait Music
+Effect:
+{
+    TargetLocation OpponentStage
+    NarrowTargets CanBeChosen && InLocation OpponentCenterStage
+    ChooseCharactersFromTargets 0 2 Choose up to 2 characters to return to hand.
+    Bounce
+}
+Text If you don't have a «Music» character, this card cannot be played from hand.
+Text Choose up to 2 of your opponent's characters and return them to your opponent's hand.
 EndCard
 
 Climax: LHS/W122-097
