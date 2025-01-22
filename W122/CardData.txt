@@ -396,29 +396,6 @@ Text Cont: This card gets +1000 power for each other 《Music》 character in yo
 *StockHealer
 EndCard
 
-Character: LHS/W122-015
-Name Mira-Creation/Flower, Hime Anyoji
-Color Y
-Level 0
-Cost 0
-Power 3500
-Trait1 Music
-Trait2 Mira-Cra Park!
-Cont: GiveAll
-{
-	*CannotSideAttack
-}
-Text Cont: All of your characters gain the following ability, "CONT - This cannot side attack."
-Auto: OnPlay
-{
-	PayCost Discard 1 HasTrait Music
-	{
-		DrawCard
-	}
-}
-Text Auto: [Discard 1 <Music> characters] When this is placed on stage from hand, you may pay cost. If you do, draw 1 card.
-EndCard
-
 Character: LHS/W122-012
 Name PASSION!!!!!!, Megumi Fujishima
 Color Y
@@ -469,6 +446,29 @@ Text Auto: When this is placed on stage from hand, choose 1 of your opponent's c
 *DropSearch(Music)
 EndCard
 
+Character: LHS/W122-015
+Name Mira-Creation/Flower, Hime Anyoji
+Color Y
+Level 0
+Cost 0
+Power 3500
+Trait1 Music
+Trait2 Mira-Cra Park!
+Cont: GiveAll
+{
+	*CannotSideAttack
+}
+Text Cont: All of your characters gain the following ability, "CONT - This cannot side attack."
+Auto: OnPlay
+{
+	PayCost Discard 1 HasTrait Music
+	{
+		DrawCard
+	}
+}
+Text Auto: [Discard 1 <Music> characters] When this is placed on stage from hand, you may pay cost. If you do, draw 1 card.
+EndCard
+
 Character: LHS/W122-018
 Name Orihime Storybook, Rurino Osawa
 Color Y
@@ -492,7 +492,7 @@ Auto: OnSentFromStageToWaitingRoom
 		SearchWaitingRoom NameEquals Mira-Creation/Flower, Hime Anyoji
 	}
 }
-Text Auto:[(1)] When this is sent from Stage to Waiting Room, you may pay cost. If you do, choose 1 {U 0/0 Hime Drop Draw} in your Waiting Room, add it to hand.
+Text Auto:[(1)] When this is sent from Stage to Waiting Room, you may pay cost. If you do, choose 1 "Mira-Creation/Flower, Hime Anyoji" in your Waiting Room, add it to hand.
 EndCard
 
 Character: LHS/W122-019
@@ -853,6 +853,30 @@ Act: 2 RestSelf
 Text Act:  [(2) Rest this] Search your deck for up to 1 <Mira-Cra Park!> character, show it to your opponent, add it to hand, and shuffle your deck afterwards.
 EndCard
 
+Character: LHS/W122-041
+Name Setsubun -Allure-, Megumi Fujishima
+Color R
+Level 2
+Cost 2
+Power 6500
+Trigger Soul
+Trait1 Music
+Trait2 Mira-Cra Park!
+*GainPowerForEachOther(1000, Music)
+Auto: OnSentFromStageToWaitingRoom
+{
+	PayCost 1
+	{
+		TargetLocation WaitingRoom
+		NarrowTargets NameEquals Orihime Storybook, Rurino Osawa
+		FirstTarget
+		Change
+		Rest
+	}
+}
+Text Auto: (1) When this is sent from Stage to Waiting Room, you may pay cost. If you do, choose up to 1 {U 1/1 Rurino} in your Waiting Room, place it on stage in this card's former slot Rested.
+EndCard
+
 Character: LHS/W122-042
 Name Mira-Creation, Rurino Osawa
 Color R
@@ -1047,8 +1071,9 @@ Color R
 Level 2
 Cost 1
 Power 1000
+Trigger Soul
 Trait1 Music
-Trait2 Mira-Cra Park!
+Trait2 DOLLCHESTRA
 Auto: OnUseThisCardsBackup
 {
 	TargetLocation Stage
@@ -1060,6 +1085,46 @@ Auto: OnUseThisCardsBackup
 }
 Text Auto: When you use this card's BACKUP, choose 1 of your characters, this turn, it gains the following ability, "AUTO - When this is Reversed, if the battle opponent's Level is higher than your opponent's Level, you may send that character to the bottom of your opponent's deck. "
 Backup 2500
+EndCard
+
+Character: LHS/W122-053
+Name Bloom the smile, Bloom the dream!, Hime Anyoji
+Color R
+Level 3
+Cost 2
+Power 8000
+Trigger Soul
+Trait1 Music
+Trait2 Mira-Cra Park!
+Cont: InHand
+{
+	If LocationContains OpponentStage 1 Compare ThatCardsLevel 3 OrHigher
+	{
+		LoseLevel 1
+	}
+}
+Text Cont: If your opponent has a level 3 or higher character, this card gets -1 level in your hand.
+Cont: GiveSelf
+{
+	If AllYourCharacters HasTrait Music
+	{
+		GainPower 2000
+	}
+}
+Text Cont: If all of your characters are <Music>, this gets +2000 power.
+Auto: OnPlay
+{
+	MultipleChoiceQuestion Choose an effect:\n1. Look at up to 3 cards from the top of your deck, choose 1 card to add to your hand, then send the rest back to Waiting Room. \n2. You may place the top card of your clock into the Waiting Room.|Effect 1|Effect 2
+	If Answer 0
+	{
+		*CheckAndAdd(3)
+	}
+	If Answer 1
+	{
+		Heal
+	}
+}
+Text Auto: When this is placed on stage from hand, choose 1 of the following 2 effects and resolve it, \n"Look at up to 3 cards from the top of your deck, choose up to 1 card among them, add it to hand, and send the rest to Waiting Room."\n"You may place the top card of your clock into your Waiting Room"
 EndCard
 
 Character: LHS/W122-056
@@ -1192,7 +1257,27 @@ Act: Resonate Dream Believers, Tsuzuri Yugiri
 	GainPower 1000
 }
 Text Act: RESONATE [Reveal "Dream Believers, Tsuzuri Yugiri" from your hand, Rest this] Choose 1 of your characters, this turn, it gets +3000 power.
+EndCard
 
+Event: LHS/W122-064
+Name New Year's Greetings -Music-, Rurino Osawa
+Color R
+Level 2
+Cost 2
+Counter
+Effect:
+{
+	Brainstorm 3
+	TargetBrainstormed
+	NarrowTargets IsClimax
+	If HasTarget
+	{
+		TargetBattleOpponent
+		NarrowTargets CanBeChosen
+		GainSpecialEffect CannotDealDamage
+	}
+}
+Text Counter: BRAINSTORM Flip over the top 3 cards of your deck, and put them into your waiting room. If there is a climax revealed among those cards, choose 1 of your opponent's characters in battle, it gets the following ability until end of turn. "Cont: This card cannot deal damage to a player."
 EndCard
 
 Climax: LHS/W122-065
