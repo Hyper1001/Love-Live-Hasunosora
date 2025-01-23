@@ -516,6 +516,52 @@ Text Auto: [(2) Put 1 character from your stage into your waiting room] When you
 Backup 2500
 EndCard
 
+Character: LHS/W122-020
+Name 365 Days, Kozue Otomune
+Color Y
+Level 2
+Cost 1
+Trigger Soul
+Power 6000
+Soul 1
+Trait1 Music
+Trait2 Cerise Bouquet
+Cont: GiveSelf
+{
+	If MyTurn
+	{
+		TargetLocation Stage
+		NarrowTargets Other && HasTrait Music
+		SetXValue TargetCount
+		MultiplyXValue 1500
+		GainPower X
+	}
+}
+Text Cont: During your turn, for each of your other <Music> characters, this gets +1500 power.
+Auto: OnPlay
+{
+	PayCost Discard 1 HasTrait Music
+	{
+		TargetLocation OpponentStage
+		ChooseCharacterFromTargets_Optional Choose up to 1 character to put into memory until end of turn.
+		If HasTarget
+		{
+			MoveCard OpponentMemory
+			ScheduleEffectForTargets StartEncoreStep
+			{
+				Effect:
+				{
+					RevealTargets
+					PlaceOnStage False True True False
+				}
+				Text Your character returns from memory.
+			}
+		}
+	}
+}
+Text Auto: [Discard 1 <Music> character] When this is placed on stage from hand, you may pay cost. If you do, choose up to 1 of your opponent's characters, send it to Memory, at the start of the Encore Step, your opponent places that character on stage in any slot.
+EndCard
+
 Character: LHS/W122-021
 Name Bloom the smile, Bloom the dream!, Ginko Momose
 Color Y
@@ -638,7 +684,11 @@ Auto: PlacedBy Standby
 {
 	Heal
 }
-Text Auto: When this is placed on stage by the effect of Standby or the ACT effect of {Unknown Megumi}, you may heal 1.
+Auto: PlacedBy 365 Days, Megumi Fujishima
+{
+	Heal
+}
+Text Auto: When this is placed on stage by the effect of Standby or the ACT effect of "365 Days, Megumi Fujishima", you may heal 1.
 Auto: OnAttack
 {
 	If Climax Do! Do! Do! && StageContains 2 Other && HasTrait Music
@@ -937,6 +987,40 @@ Act: 2 Discard 1 Any RestSelf
 Text Cont: [(2) Discard 1 card, Rest this] Choose 1 card in your Clock, add it to hand.
 EndCard
 
+Character: LHS/W122-044
+Name 365 Days, Megumi Fujishima
+Color R
+Level 0
+Cost 0
+Power 1500
+Trait1 Music
+Trait2 Mira-Cra Park!
+Auto: OnPlay
+{
+	PayCost 2
+	{
+		SearchWaitingRoom HasTrait Music
+	}
+}
+Text Auto: (2) When this is plcaed on stage from hand, you may pay cost. If you do, choose 1 <Music> character in your Waiting Room, add it to hand.
+Cont: GiveSelf
+{
+	If Compare MyLevel 3 OrMore
+	{
+		GainEffect
+		{
+			Act: SendSelf WaitingRoom
+			{
+				SearchLocationForTargets Hand 0 1 NameEquals Dream Believers, Megumi Fujishima
+				Change
+			}
+			Text Act: [Place this card in your waiting room] Choose up to one card named "Dream Believers, Megumi Fujishima" in your hand, and place it on the slot where this card was.
+		}
+	}
+}
+Text Cont: [Send this to Waiting Room] If you are Level 3, choose 1 "Dream Believers, Megumi Fujishima" from your hand, place it on stage in this card's former slot.
+EndCard
+
 Character: LHS/W122-045
 Name PASSION!!!!!!, Hime Anyoji
 Color R
@@ -1016,6 +1100,40 @@ Auto: OnOtherAttacks
 	GainPower X
 }
 Text Auto: When your other <Music> character attacks, this turn, this gets +X power. X equals the number of your other <Music> characters times 500.
+EndCard
+
+Character: LHS/W122-049
+Name Dakishimeru Hanabira, Megumi Fujishima
+Color R
+Level 1
+Cost 0
+Power 4000
+Trait1 Music
+Trait2 Mira-Cra Park!
+Combo Dakishimeru Hanabira
+Cont: GiveSelf
+{
+	If StageContains 2 Other && HasTrait Music
+	{
+		GainPower 2000
+	}
+}
+Text Cont: If you have 2 or more other <Music> characters, this gets +2000 power.
+Auto: OnEndOfAttack
+{
+	If Climax Dakishimeru Hanabira && StageContains 2 Other && HasTrait Music
+	{
+		PayCost SendClimax WaitingRoom
+		{
+			RevealUpTo Deck 4
+			ChooseCardsFromTargets 0 2 HasTrait Music
+			RevealTargets
+			MoveCard Hand
+			PutTheRestIntoTheWaitingRoom
+		}
+	}
+}
+Text Auto: CxCombo [Send "Dakishimeru Hanabira" from your CX Area to Waiting Room] At the end of this card's attack, if you have 2 or more other <Music> characters, you may pay cost. If you do, look at up to 4 cards from the top of your deck, choose up to 2 <Music> character from among them, show them to your opponent, add them to hand, send the rest to Waiting Room.
 EndCard
 
 Character: LHS/W122-054
@@ -1295,6 +1413,22 @@ Name Mira-Creation
 *StandbyClimax
 EndCard
 
+Climax: LHS/W122-068
+Name Dakishimeru Hanabira
+Color R
+Trigger DoubleSoul
+Auto: OnPlay
+{
+	Message Choose a character to put into your stock.
+	SearchLocationForTargets WaitingRoom 0 1 IsCharacter && Compare ThatCardsLevel 1 OrLower
+	RevealTargets
+	MoveCard Stock
+	TargetLocation Stage
+	GainSoul 1
+}
+Text Auto: When this card is placed on your climax area from your hand, choose up to 1 level 1 or lower character in your waiting room, put it into your stock, and all of your characters get +1 soul until end of turn.
+EndCard
+
 Character: LHS/W122-070
 Name A Story Achieved Together, Kaho Hinoshita
 Color B
@@ -1542,6 +1676,36 @@ Auto: OnPlay
 Text Auto: When this is placed on stage from hand, you may perform the following effect, "Your opponent chooses 1 CX from their Waiting Room, and shuffles all other cards from their Waiting Room into their deck."
 EndCard
 
+Character: LHS/W122-080
+Name 365 Days, Tsuzuri Yugiri
+Color B
+Level 0
+Cost 0
+Power 1000
+Trait1 Music
+Trait2 DOLLCHESTRA
+Auto: OnPlay
+{
+	PayCost 2
+	{
+		Refresh
+	}
+}
+Text Auto: (2) When this is placed on stage from hand, you may pay cost. If you do, shuffle all cards from your Waiting Room into your deck.
+Auto: StartClimaxPhase
+{
+	If Compare MyLevel 3 OrMore
+	{
+		PayCost 1 SendSelf Hand
+		{
+			SearchLocationForTargets Hand 1 1 NameEquals Dream Believers, Tsuzuri Yugiri
+			Change
+		}
+	}
+}
+Text Auto: [(1) Return this to hand] At the start of your CX Phase, if you are Level 3 or higher, you may pay cost. If you do, choose up to 1 "Dream Believers, Tsuzuri Yugiri" from your hand, place it on stage in this card's former slot.
+EndCard
+
 Character: LHS/W122-081
 Name Aoku Haruka/Flower, Ginko Momose
 Color B
@@ -1671,6 +1835,38 @@ Alarm
 Text Auto:  If this is on top of your Clock, at the start of your Climax Phase, choose 1 of your <Music> characters, this turn, it gains the following ability, "AUTO - When this card's battle opponent is Reversed, you may send that character to the bottom of your opponent's deck.
 EndCard
 
+Character: LHS/W122-088
+Name Dakishimeru Hanabira, Kozue Otomune
+Color B
+Level 1
+Cost 0
+Power 3500
+Trait1 Music
+Trait2 Cerise Bouquet
+Combo UnknownCX
+Auto: OnAttack
+{
+	If LocationContains Climax 1 HasTrigger Choice
+	{
+		GainPower 1000
+	}
+	If LocationContains Climax 1 NameEquals UnknownCX
+	{
+		GainPower 1000
+	}
+	TargetLocation WaitingRoom
+	NarrowTargets HasTrigger Choice
+	SetXValue TargetCount
+	TargetLocation WaitingRoom
+	NarrowTargets NameEquals UnknownCX
+	AddToXValue TargetCount
+	MultiplyXValue 1000
+	TargetSelf
+	GainPower X
+}
+Text Auto: CxCombo When this attacks, this turn, this gets +X power. X is equal to the number of CXes with a Choice CX or {Unknown CX} in your CX Area or Waiting Room times 1000.
+EndCard
+
 Character: LHS/W122-090
 Name Reflection in the mirror, Ginko Momose
 Color B
@@ -1704,6 +1900,27 @@ Act: RestSelf
 	}
 }
 Text Act: [Rest this] Choose 1 of your <Music> characters, this turn, it gains the following ability, "AUTO - When this attacks, this turn, this gets +X power. X equals the number of CXes with a Choice Trigger in your CX Area and Waiting Room times 500."
+EndCard
+
+Character: LHS/W122-093
+Name Murozaki Lattice, Tsuzuri Yugiri
+Color B
+Level 2
+Cost 1
+Power 4500
+Trigger Soul
+Trait1 Music
+Trait2 DOLLCHESTRA
+Auto: OnPlay
+{
+	TargetLocation Stage
+	ChooseCharactersFromTargets 0 2 Choose up to 2 characters to gain the following effect, "AUTO - When this is Reversed, if the battle opponent's Level is higher than your opponent's Level, you may send that character to the bottom of your opponent's deck."
+	GainEffect
+	{
+		*BlueEarlyPlayBomb
+	}
+}
+Text Auto:  When this is placed on stage from hand, choose up to 2 of your characters, this turn, they gain the following ability, "AUTO - When this is Reversed, if the battle opponent's Level is higher than your opponent's Level, you may send that character to the bottom of your opponent's deck."
 EndCard
 
 Character: LHS/W122-094
@@ -1743,6 +1960,11 @@ Effect:
 }
 Text If you don't have a «Music» character, this card cannot be played from hand.
 Text Choose up to 2 of your opponent's characters and return them to your opponent's hand.
+EndCard
+
+Climax: LHS/W122-101
+Name UnknownCX
+*GateClimax
 EndCard
 
 Climax: LHS/W122-097
