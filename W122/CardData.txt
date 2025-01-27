@@ -80,7 +80,7 @@ Trigger Soul
 Trait1 Music
 Trait2 Cerise Bouquet
 Combo Suisai Sekai
-Auto: OnPlay | PlacedBy Dakishimeru Hanabira, Kaho Hinoshita
+Auto: OnPlay|PlacedBy Dakishimeru Hanabira, Kaho Hinoshita
 {
 	*OptionalHeal
 	TargetSelf
@@ -475,7 +475,7 @@ Text Auto: [Return this to hand] When a CX is placed in your CX Area, you may pa
 EndCard
 
 Character: LHS/W122-015
-Name Mira-Creation/Flower, Hime Anyoji
+Name Mira-Creation/Elegance, Hime Anyoji
 Color Y
 Level 0
 Cost 0
@@ -548,10 +548,10 @@ Auto: OnSentFromStageToWaitingRoom
 {
 	PayCost 1
 	{
-		SearchWaitingRoom NameEquals Mira-Creation/Flower, Hime Anyoji
+		SearchWaitingRoom NameEquals Mira-Creation/Elegance, Hime Anyoji
 	}
 }
-Text Auto:[(1)] When this is sent from Stage to Waiting Room, you may pay cost. If you do, choose 1 "Mira-Creation/Flower, Hime Anyoji" in your Waiting Room, add it to hand.
+Text Auto:[(1)] When this is sent from Stage to Waiting Room, you may pay cost. If you do, choose 1 "Mira-Creation/Elegance, Hime Anyoji" in your Waiting Room, add it to hand.
 EndCard
 
 Character: LHS/W122-019
@@ -655,12 +655,21 @@ Power 2500
 Trigger Soul
 Trait1 Music
 Trait2 Cerise Bouquet
-Act: 2 SendSelf WaitingRoom
+Cont: GiveSelf
 {
-	SearchLocationForTargets WaitingRoom 1 1 NameEquals Dream Believers, Kaho Hinoshita
-	Change
+	If Compare MyLevel 3 OrMore
+	{
+		GainEffect
+		{
+			Act: 2 SendSelf WaitingRoom
+			{
+				SearchLocationForTargets WaitingRoom 1 1 NameEquals Dream Believers, Kaho Hinoshita
+				PlaceOnStage false true true false
+			}
+		}
+	}
 }
-Text Act: [(2) Send this to Waiting Room] If you are Level 3 or higher, choose 1 "Dream Believers, Kaho Hinoshita" in your Waiting Room, place it on stage in this card's former slot.
+Text Act: [(2) Send this to Waiting Room] If you are Level 3 or higher, choose 1 "A Story Achieved Together, Kozue Otomune" in your Waiting Room, place it on stage in this card's former slot.
 EndCard
 
 Character: LHS/W122-023
@@ -696,6 +705,19 @@ Auto: OnPlay
 }
 Text Auto: When this is placed on stage from hand, if you have 4 or more other <Music> characters, choose 1 <Music> character in your Waiting Room, you may send it to Stock.
 *YellowEarlyPlayBomb
+EndCard
+
+Character: LHS/W122-026
+Name Seiran no Koi Nagashi, Hime Anyoji
+Color Y
+Level 2
+Cost 1
+Trigger Soul
+Power 2500
+Trait1 Music
+Trait2 Mira-Cra Park!
+*MemoryBackup
+Backup 3000
 EndCard
 
 Event: LHS/W122-028
@@ -1000,7 +1022,7 @@ Auto: OnSentFromStageToWaitingRoom
 		Rest
 	}
 }
-Text Auto: (1) When this is sent from Stage to Waiting Room, you may pay cost. If you do, choose up to 1 {U 1/1 Rurino} in your Waiting Room, place it on stage in this card's former slot Rested.
+Text Auto: (1) When this is sent from Stage to Waiting Room, you may pay cost. If you do, choose up to 1 "Orihime Storybook, Rurino" in your Waiting Room, place it on stage in this card's former slot Rested.
 EndCard
 
 Character: LHS/W122-042
@@ -1475,6 +1497,35 @@ Auto: OnPlay
 Text Auto: When this is placed on stage from hand, if you have 2 or more other <Music> characters, you may draw 1 card. If you do, discard 1 card.
 EndCard
 
+Character: LHS/W122-061
+Name Seiran no Koi Nagashi, Kosuzu Kachimachi
+Color R
+Level 1
+Cost 0
+Power 3500
+Trait1 Music
+Trait2 DOLLCHESTRA
+Auto: OnAttack
+{
+	TargetLocation Facing
+	If Compare TargetCardsLevel 2 Exactly
+	{
+		TargetSelf
+		GainPower 4000
+		GainSoul 1
+	}
+}
+Text Auto: When this card attacks, if the level of the character facing this card is 2, this card gets +4000 power and +1 soul until end of turn.
+Auto: StartClimaxPhase
+{
+	PayCost Resonate Dream Believers, Tsuzuri Yugiri
+	{
+		GainPower 4000
+	}
+}
+Text Auto: RESONATE [Reveal "Dream Believers, Tsuzuri Yugiri" from your hand] At the beginning of your climax phase, you may pay the cost. If you do, this card gains +4000 power until end of turn.
+EndCard
+
 Character: LHS/W122-062
 Name Murozaki Lattice, Megumi Fujishima
 Color R
@@ -1910,7 +1961,7 @@ Text Auto: When a CX is placed in your CX Area, this turn, this gets +3000 power
 EndCard
 
 Character: LHS/W122-084
-Name Ladybug/Flower, Kosuzu Kachimachi
+Name Ladybug/Beauty, Kosuzu Kachimachi
 Color B
 Level 1
 Cost 1
@@ -1972,7 +2023,7 @@ Text Auto:  If this is on top of your Clock, at the start of your Climax Phase, 
 EndCard
 
 Character: LHS/W122-087
-Name Murozaki Lattice, Sayaka Murano
+Name Ball of Truths, Sayaka Murano
 Color B
 Level 0
 Cost 0
@@ -1986,7 +2037,7 @@ Auto: OnPlay
 		*CheckAndAddOne(4,HasTrait DOLLCHESTRA)
 	}
 }
-Text Auto: RESONATE [Discard 1 card, Reveal {RR 3/2 Tsuzuri} from your hand] When this is placed on stage from hand, you may pay cost. If you do, look at up to 4 cards from the top of your deck, choose up to 1 <DOLLCHESTRA> character from among them, show it to your opponent, add it to hand, send the rest to Waiting Room.
+Text Auto: RESONATE [Discard 1 card, Reveal "Dream Believers, Tsuzuri Yugiri" from your hand] When this is placed on stage from hand, you may pay cost. If you do, look at up to 4 cards from the top of your deck, choose up to 1 <DOLLCHESTRA> character from among them, show it to your opponent, add it to hand, send the rest to Waiting Room.
 EndCard
 
 Character: LHS/W122-088
@@ -1997,14 +2048,14 @@ Cost 0
 Power 3500
 Trait1 Music
 Trait2 Cerise Bouquet
-Combo UnknownCX
+Combo Genyou Yakou
 Auto: OnAttack
 {
 	If LocationContains Climax 1 HasTrigger Choice
 	{
 		GainPower 1000
 	}
-	If LocationContains Climax 1 NameEquals UnknownCX
+	If LocationContains Climax 1 NameEquals Genyou Yakou
 	{
 		GainPower 1000
 	}
@@ -2012,13 +2063,13 @@ Auto: OnAttack
 	NarrowTargets HasTrigger Choice
 	SetXValue TargetCount
 	TargetLocation WaitingRoom
-	NarrowTargets NameEquals UnknownCX
+	NarrowTargets NameEquals Genyou Yakou
 	AddToXValue TargetCount
 	MultiplyXValue 1000
 	TargetSelf
 	GainPower X
 }
-Text Auto: CxCombo When this attacks, this turn, this gets +X power. X is equal to the number of CXes with a Choice CX or {Unknown CX} in your CX Area or Waiting Room times 1000.
+Text Auto: CxCombo When this attacks, this turn, this gets +X power. X is equal to the number of CXes with a Choice CX or "Genyou Yakou" in your CX Area or Waiting Room times 1000.
 EndCard
 
 Character: LHS/W122-090
@@ -2054,6 +2105,28 @@ Act: RestSelf
 	}
 }
 Text Act: [Rest this] Choose 1 of your <Music> characters, this turn, it gains the following ability, "AUTO - When this attacks, this turn, this gets +X power. X equals the number of CXes with a Choice Trigger in your CX Area and Waiting Room times 500."
+EndCard
+
+Character: LHS/W122-091
+Name Seiran no Koi Nagashi, Ginko Momose
+Color B
+Level 1
+Cost 1
+Power 5500
+Trait1 Music
+Trait2 Cerise Bouquet
+Auto: OnPlay
+{
+	If StageContains 4 HasTrait Music && Other &&& LocationContains WaitingRoom 1 HasTrait Music && IsCharacter
+	{
+		Message Choose up to 1 <Music> character to put into stock
+		SearchLocationForTargets WaitingRoom 0 1 HasTrait Music && IsCharacter
+		RevealTargets
+		MoveCard Stock
+	}
+}
+Text Auto: When this card is placed on the stage from your hand, if the number of other «Music» characters you have is 4 or more, you may choose a «Music» character in your waiting room and put it in your stock.
+*GainPowerWhenAttackingLevel2(6000)
 EndCard
 
 Character: LHS/W122-093
@@ -2117,7 +2190,7 @@ Text Choose up to 2 of your opponent's characters and return them to your oppone
 EndCard
 
 Climax: LHS/W122-101
-Name UnknownCX
+Name Genyou Yakou
 *GateClimax
 EndCard
 
