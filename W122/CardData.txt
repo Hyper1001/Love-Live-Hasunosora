@@ -228,7 +228,7 @@ Auto: StartMyEncorePhase
 	{
 		PayCost SendClimax WaitingRoom
 		{
-		RevealUpTo Deck 3
+			RevealUpTo Deck 3
 			Message Choose up to 2 <Cerise Bouquet> characters to put into your hand
 			ChooseCardsFromTargets 0 2 HasTrait Cerise Bouquet
 			MoveCard Hand
@@ -528,6 +528,45 @@ TimesPerTurn 1
 Text Auto: This ability activates up to once per turn. When you use an ACT, this turn, this gets +4500 power.
 EndCard
 
+Character: LHS/W122-017
+Name Holiday∞Holiday, Kozue Otomune
+Color Y
+Level 1
+Cost 0
+Trigger Soul
+Power 3000
+Trait1 Music
+Trait2 Cerise Bouquet
+Combo Holiday∞Holiday
+Cont: GiveSelf
+{
+	If StageContains 1 Other && HasTrait Music && MyTurn
+	{
+		GainPower 3000
+	}
+}
+Text Cont: During your turn, if you have another <Music> character, this gets +3000 power.
+Auto: OnOpponentReverse
+{
+	If Climax Holiday∞Holiday && StageContains 2 Other && HasTrait Music
+	{
+		SearchDeck HasTrait Music
+		Peek Deck 2
+		Message Choose cards to return to the top deck.
+		ChooseCardsFromTargets 0 2 Any
+		MoveCard Deck
+		If Compare TargetCount 2 OrMore
+		{
+			Message Select the order to return cards (first on top)
+			TargetTop Deck 2
+			Reorder
+		}
+		PutTheRestIntoTheWaitingRoom
+	}
+}
+Text Auto: CxCombo When this card's battle opponent is Reversed, if you have "Holiday∞Holiday" in your CX Area, and you have 2 or more other <Music> characters, search your deck for up to 1 <Music> character, show it to your opponent, add it to hand, and shuffle your deck afterwards, then look at up to 2 cards from the top of your deck, choose up to 2 cards from among them, place them on top of your deck in any order, and send the rest to Waiting Room.
+EndCard
+
 Character: LHS/W122-018
 Name Orihime Storybook, Rurino Osawa
 Color Y
@@ -688,12 +727,35 @@ Text Act:  [Send 1 of your other characters on stage to Waiting Room, Send this 
 EndCard
 
 Character: LHS/W122-024
+Name Secret Christmas, Megumi Fujishima
+Color Y
+Level 1
+Cost 0
+Power 2500
+Trait1 Music
+Trait2 Mira-Cra Park!
+Auto: OnUseThisCardsBackup
+{
+    TargetMyCharacterInBattle
+    SaveTargets
+    TargetBattleOpponent
+    AddSavedToCurrentTargets
+    GainEffect
+    {
+        *FreeEncore
+    }
+}
+Text Auto: When you use this card's "BACKUP", all characters in battle get the following ability until end of turn. "Auto: When this card is placed from the stage to the waiting room, you may put this card rest in the position this card was in."
+Backup 0
+EndCard
+
+Character: LHS/W122-025
 Name Murozaki Lattice, Kaho Hinoshita
 Color Y
 Level 1
 Cost 1
 Trigger Soul
-Power 3500
+Power 1000
 Trait1 Music
 Trait2 Cerise Bouquet
 Auto: OnPlay
@@ -718,6 +780,41 @@ Trait1 Music
 Trait2 Mira-Cra Park!
 *MemoryBackup
 Backup 3000
+EndCard
+
+Character: LHS/W122-027
+Name Spring breeze swing, Rurino Osawa
+Color Y
+Level 3
+Cost 2
+Trigger Soul
+Soul 2
+Power 10000
+Trait1 Music
+Trait2 Mira-Cra Park!
+Combo Kokon Touzai
+Auto: OnAttack
+{
+	Mill 2
+	*CountSoulTriggers
+	Peek OpponentDeck X
+	*ChooseCardsToPutIntoWaitingRoomReturnTheRestInAnyOrder(0,X)
+}
+Text Auto: When this attacks, mill 2. Then look at up to X cards from the top of your opponent's deck, choose up to X cards from among them, put them on top of your opponent's deck in any order, and send the rest to Waiting Room. X is equal to the total number of Soul Triggers milled.
+Auto: OnAttack
+{
+	If Climax Kokon Touzai && StageContains 2 Other && HasTrait Music
+	{
+		SearchLocationForTargets WaitingRoom 0 1 IsClimax
+		If HasTarget
+		{
+			RevealTargets
+			MoveCardToBottom Deck
+			ShuffleLocation Deck
+		}
+	}
+}
+Text Auto: When this attacks, if you have "Kokon Touzai" in your CX Area, and you have 2 or more other <Music> characters, choose up to 1 CX in your CX Area or Waiting Room, shuffle it into your deck.
 EndCard
 
 Event: LHS/W122-028
@@ -745,6 +842,27 @@ EndCard
 Climax: LHS/W122-030
 Name Aoku Haruka
 *ChoiceClimax
+EndCard
+
+Climax: LHS/W122-031
+Name Holiday∞Holiday
+*ChoiceClimax
+EndCard
+
+Climax: LHS/W122-032
+Name Kokon Touzai
+Color Y
+Trigger DoubleSoul
+Auto: OnPlay
+{
+	Message Choose a character to put into your stock.
+	SearchLocationForTargets WaitingRoom 0 1 IsCharacter && Compare ThatCardsLevel 1 OrLower
+	RevealTargets
+	MoveCard Stock
+	TargetLocation Stage
+	GainSoul 1
+}
+Text Auto: When this card is placed on your climax area from your hand, choose up to 1 level 1 or lower character in your waiting room, put it into your stock, and all of your characters get +1 soul until end of turn.
 EndCard
 
 Character: LHS/W122-033
@@ -1022,7 +1140,7 @@ Auto: OnSentFromStageToWaitingRoom
 		Rest
 	}
 }
-Text Auto: (1) When this is sent from Stage to Waiting Room, you may pay cost. If you do, choose up to 1 "Orihime Storybook, Rurino" in your Waiting Room, place it on stage in this card's former slot Rested.
+Text Auto: [(1)] When this is sent from Stage to Waiting Room, you may pay cost. If you do, choose up to 1 "Orihime Storybook, Rurino" in your Waiting Room, place it on stage in this card's former slot Rested.
 EndCard
 
 Character: LHS/W122-042
@@ -1117,6 +1235,55 @@ Cont: GiveSelf
 	}
 }
 Text Cont: [Send this to Waiting Room] If you are Level 3, choose 1 "Dream Believers, Megumi Fujishima" from your hand, place it on stage in this card's former slot.
+EndCard
+
+Character: LHS/W122-046
+Name Shuushoku Country Road, Tsuzuri Yugiri
+Color R
+Level 0
+Cost 0
+Power 2000
+Trait1 Music
+Trait2 DOLLCHESTRA
+Auto: OnSentFromStageToWaitingRoom
+{
+	PayCost 1 Clock
+	{
+		SetXValue MyLevel
+		AIChoice PlaceOnStageStanding
+		Message Choose a character to place on stage.
+		SearchLocationForTargets Deck 0 1 IsCharacter && Compare ThatCardsLevel X OrLess && Compare ThatCardsCost 0 OrLess && HasTrait Music
+		RevealTargets
+		PlaceOnStage False True True False
+		Rest
+		ShuffleLocation Deck
+	}
+}
+Text Auto: [(1) Put the top card of your deck into Clock] When this is sent from Stage to Waiting Room, you may pay cost. If you do, search your deck for up to 1 Cost 0 <Music> character whose Level is equal or lower than your Level, place it on stage in any slot Rested, and shuffle your deck afterwards.
+Auto: StartClimaxPhase
+{
+	TargetLocation Stage
+	NarrowTargets HasTrait Music
+	ChooseCharacterFromTargets
+	GainEffect
+	{
+		Auto: OnAttack
+		{
+			TargetTop Deck 2
+			If Compare TargetCount 2 OrMore
+			{
+				Reorder
+			}
+			Else
+			{
+				View
+			}
+		}
+		Text Auto: When this attacks, look at up to 2 cards from the top of your deck, and put them back on top in any order.
+	}
+}
+Alarm
+Text Auto: If this is on top of your Clock, at the start of your Climax Phase, choose 1 of your <Music> characters, this turn, it gains the following ability, "AUTO - When this attacks, look at up to 2 cards from the top of your deck, and put them back on top in any order."
 EndCard
 
 Character: LHS/W122-045
@@ -1232,6 +1399,57 @@ Auto: OnEndOfAttack
 	}
 }
 Text Auto: CxCombo [Send "Dakishimeru Hanabira" from your CX Area to Waiting Room] At the end of this card's attack, if you have 2 or more other <Music> characters, you may pay cost. If you do, look at up to 4 cards from the top of your deck, choose up to 2 <Music> character from among them, show them to your opponent, add them to hand, send the rest to Waiting Room.
+EndCard
+
+Character: LHS/W122-050
+Name Hakuchuu à la mode, Rurino Osawa
+Color R
+Level 1
+Cost 1
+Trigger Soul
+Power 4000
+Trait1 Music
+Trait2 Mira-Cra Park!
+Combo Hakuchuu à la Mode
+Cont: GiveAll
+{
+	If MyTurn && Other
+	{
+		GainPower 1000
+	}
+}
+Text Cont: During your turn, all of your other <Music> characters get +1000 power.
+Auto: StartAttackPhase
+{
+	PayCost 1
+	{
+		TargetTop Deck 2
+		If Compare TargetCount 2 OrMore
+		{
+			Reorder
+		}
+		Else
+		{
+			View
+		}
+		TargetLocation Stage
+		NarrowTargets NameContains Megumi
+		ChooseCharacterFromTargets
+		Stand
+	}
+}
+Text Auto: [(1)] At the start of your Attack Phase, you may pay cost. If you do, look at up to 2 cards from the top of your deck, and put them back on top in any order, then choose 1 of your characters with "Megumi" in its name, Stand it.
+Auto: StartMyEncorePhase
+{
+	If Climax Hakuchuu à la Mode
+	{
+		PayCost SendClimax WaitingRoom
+		{
+			*CheckAndAddOne(6,HasTrait Music)
+		}
+	}
+}
+Text Auto: [Send "Hakuchuu à la Mode" from your CX Area to Waiting Room] At the start of your Encore Step, you may pay cost. If you do, look at up to 6 cards from the top of your deck, choose up to 1 <Music> character from among them, show it to your opponent, add it to hand, send the rest to Waiting Room
 EndCard
 
 Character: LHS/W122-051
@@ -1446,6 +1664,33 @@ Act: 1 SendSelf WaitingRoom
 Text Act: [(1) Send this to Waiting Room] Look at up to 4 cards from the top of your deck, choose up to 1 <Music> character from among them, show it to your opponent, add it to hand, and send the rest to Waiting Room.
 EndCard
 
+Character: LHS/W122-058
+Name Winter Gifts, Megumi Fujishima
+Color R
+Level 0
+Cost 0
+Power 1500
+Trait1 Music
+Trait2 Mira-Cra Park!
+Auto: OnPlay
+{
+	Question Would you like to Mill 3 cards?
+	If Yes
+	{
+		Mill 3
+	}
+}
+Text Auto: When this is placed on stage from hand, you may mill 3.
+Auto: OnPlayedNormally
+{
+	PayCost Discard 1 Any
+	{
+		Bond Hakuchuu à la mode, Rurino Osawa|Dream Believers, Rurino Osawa
+	}
+}
+Text Auto: BOND/ <b>"Hakuchuu à la mode, Rurino Osawa" or "Dream Believers, Rurino Osawa"</b> [Discard 1 card] (<i>When this card is played and placed on the stage, you may pay the cost, choose 1 "Hakuchuu à la mode, Rurino Osawa" or "Dream Believers, Rurino Osawa" in your waiting room, and return it to your hand</i>)
+EndCard
+
 Character: LHS/W122-059
 Name Murozaki Lattice, Tsuzuri Yugiri
 Color R
@@ -1614,6 +1859,11 @@ Auto: OnPlay
 	GainSoul 1
 }
 Text Auto: When this card is placed on your climax area from your hand, choose up to 1 level 1 or lower character in your waiting room, put it into your stock, and all of your characters get +1 soul until end of turn.
+EndCard
+
+Climax: LHS/W122-069
+Name Hakuchuu à la Mode
+*StandbyClimax
 EndCard
 
 Character: LHS/W122-070
@@ -1830,6 +2080,76 @@ Auto: OnAttack
 Text Auto: CxCombo When this attacks, if you have "Ladybug" in your CX Area, and you have 2 or more other <Music> characters, look at up to 4 cards from the top of your deck, choose up to 2 <Music> characters from among them, show them to your opponent, add them to hand, send the rest to Waiting Room.
 EndCard
 
+Character: LHS/W122-077
+Name Dolphin〰Beach, Kaho Hinoshita
+Color B
+Level 3
+Cost 2
+Trigger Soul
+Soul 2
+Power 10000
+Trait1 Music
+Trait2 Cerise Bouquet
+Auto: OnDamageCancel
+{
+	If LocationContainsOrLess Hand 5 Any && PlayedThisTurn
+	{
+		Burn 2
+	}
+}
+TimesPerTurn 1
+Text Auto: This ability activates up to once per turn. During the turn this is placed on stage from hand, when this card's damage is cancelled, if you have 5 or less hand, you may deal 2 damage to your opponent.
+EndCard
+
+Character: LHS/W122-078
+Name Rose Garden, Sayaka Murano
+Color B
+Level 3
+Cost 2
+Soul 2
+Trigger Soul
+Power 10000
+Trait1 Music
+Trait2 DOLLCHESTRA
+Auto: OnPlay
+{
+	If AllYourCharacters HasTrait Music
+	{
+		PayCost Send 1 WaitingRoom Other && HasTrait Music
+		{
+			Message Choose up to 1 card to put into your hand
+			SearchLocationForTargets Clock 0 1 Any
+			If HasTarget
+			{
+				RevealTargets
+				MoveCard Hand
+			}
+		}
+	}
+}
+Text Auto: [Send 1 of your other <Music> characters on stage to Waiting Room] When this is placed on stage from hand, if all of your characters are <Music>, you may pay cost. If you do, choose 1 card in your Clock, add it to hand.
+Auto: OnAttack
+{
+	PayCost 3
+	{
+		Peek OpponentDeck 2
+		*ChooseCardsToPutIntoWaitingRoomReturnTheRestInAnyOrder(0,2)
+		Peek Deck 2
+		Message Choose cards to return to the top deck.
+		ChooseCardsFromTargets 0 2 Any
+		MoveCard Deck
+		If Compare TargetCount 2 OrMore
+		{
+			Message Select the order to return cards (first on top)
+			TargetTop Deck 2
+			Reorder
+		}
+		PutTheRestIntoTheWaitingRoom
+	}
+}
+Text Auto: [(3)] When this attacks, you may pay cost. If you do, look at up to 2 cards from the top of your opponent's deck, choose up to 2 cards from among them, put them on top of your opponent's deck in any order, and send the rest to Waiting Room, then look at up to 2 cards from the top of your deck, choose up to 2 cards from among them, place them on top of your deck in any order, and send the rest to Waiting Room.
+EndCard
+
 Character: LHS/W122-079
 Name Ladybug, Tsuzuri Yugiri
 Color B
@@ -2022,6 +2342,42 @@ Alarm
 Text Auto:  If this is on top of your Clock, at the start of your Climax Phase, choose 1 of your <Music> characters, this turn, it gains the following ability, "AUTO - When this card's battle opponent is Reversed, you may send that character to the bottom of your opponent's deck.
 EndCard
 
+Character: LHS/W122-086
+Name Mirage Voyage, Yugiri Tsuzuri
+Color B
+Level 0
+Cost 0
+Power 2000
+Trait1 Music
+Trait2 DOLLCHESTRA
+Combo Mirage Voyage
+Auto: OnClimaxPlay
+{
+	TargetLocation Stage
+	NarrowTargets HasTrait DOLLCHESTRA
+	ChooseCardsFromTargets 0 1
+	GainPower 2000
+}
+Text Auto: When a CX is placed in your CX Area, choose 1 of your other <DOLLCHESTRA> characters, this turn, it gets +2000 power.
+Auto: OnClimaxPlay
+{
+	If Climax Mirage Voyage
+	{
+		TargetLocation Stage
+		NarrowTargets HasTrait DOLLCHESTRA
+		ChooseCardsFromTargets 0 1
+		GainEffect
+		{
+			Auto: OnAttack
+			{
+				*CheckAndAddOne(1,HasTrait Music|IsEvent)
+			}
+		}
+	}
+}
+Text Auto: When "Mirage Voyage" is placed in your CX Area, if you have 2 or more other <Music> characters, choose 1 of your characters, this turn, it gains the following ability, "AUTO - When this attacks, look at up to 1 cards from the top of your deck, choose up to 1 <Music> character or an Event from among them, show it to your opponent, add it to hand, send the rest to Waiting Room."
+EndCard
+
 Character: LHS/W122-087
 Name Ball of Truths, Sayaka Murano
 Color B
@@ -2189,11 +2545,6 @@ Text If you don't have a «Music» character, this card cannot be played from ha
 Text Choose up to 2 of your opponent's characters and return them to your opponent's hand.
 EndCard
 
-Climax: LHS/W122-101
-Name Genyou Yakou
-*GateClimax
-EndCard
-
 Climax: LHS/W122-097
 Name AWOKE
 *GateClimax
@@ -2201,6 +2552,16 @@ EndCard
 
 Climax: LHS/W122-098
 Name Ladybug
+*GateClimax
+EndCard
+
+Climax: LHS/W122-099
+Name Mirage Voyage
+*GateClimax
+EndCard
+
+Climax: LHS/W122-100
+Name Genyou Yakou
 *GateClimax
 EndCard
 
