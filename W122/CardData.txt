@@ -2428,6 +2428,38 @@ Auto: OnAttack
 Text Auto: CxCombo When this attacks, this turn, this gets +X power. X is equal to the number of CXes with a Choice CX or "Genyou Yakou" in your CX Area or Waiting Room times 1000.
 EndCard
 
+Character: LHS/W122-089
+Name Spring breeze swing, Kaho Hinoshita
+Color B
+Level 1
+Cost 0
+Power 4000
+Trait1 Music
+Trait2 Cerise Bouquet
+Auto: OnUseAct
+{
+	If StageContains 1 Other && HasTrait Music
+	{
+		GainPower 2500
+		Question_Obvious Do you want to mill 3?
+		If Yes
+		{
+			Mill 3
+		}
+	}
+}
+Text Auto: This ability activates up to once per turn. When you use an ACT, if you have another <Music> character, this turn, this gets +2500 power, then you may mill 3.
+Auto: StartClimaxPhase
+{
+	PayCost Discard 1 HasTrait Music
+	{
+		DrawCard
+	}
+}
+Alarm
+Text Auto: ALARM [Discard 1 <Music> character] If this is on top of your Clock, at the start of your Climax Phase, you may pay cost. If you do, draw 1 card.
+EndCard
+
 Character: LHS/W122-090
 Name Reflection in the mirror, Ginko Momose
 Color B
@@ -2485,6 +2517,29 @@ Text Auto: When this card is placed on the stage from your hand, if the number o
 *GainPowerWhenAttackingLevel2(6000)
 EndCard
 
+Character: LHS/W122-092
+Name Spring breeze swing, Sayaka Murano
+Color B
+Level 2
+Cost 1
+Trigger Soul
+Power 500
+Trait1 Music
+Trait2 DOLLCHESTRA
+Auto: OnUseThisCardsBackup
+{
+	PayCost 1 Discard 1 IsClimax && HasTrigger Choice
+	{
+		TargetLocation OpponentStage
+		NarrowTargets CanBeChosen && InLocation OpponentCenterStage
+		ChooseCharactersFromTargets 0 1 Choose up to 1 characters to lose -3 Soul.
+		LoseSoul 3
+	}
+}
+Text Auto: [(1) Discard 1 CX with a Choice Trigger] When you use this card's BACKUP, you may pay cost. If you do, choose 1 of your opponent's characters, this turn, it gets -3 Souls.
+Backup 2500
+EndCard
+
 Character: LHS/W122-093
 Name Murozaki Lattice, Tsuzuri Yugiri
 Color B
@@ -2526,6 +2581,32 @@ Auto: OnAttack
 	}
 }
 Text Auto: When this attacks, if the Level of the character across from this is 3 or higher, this turn, this gets +6000 power and +2 Souls.
+EndCard
+
+Character: LHS/W122-095
+Name Genyou Yakou, Kozue Otomune
+Color B
+Level 3
+Cost 2
+Power 10000
+Trigger Soul
+Soul 2
+Trait1 Music
+Trait2 Cerise Bouquet
+Combo Genyou Yakou
+Auto: OnAttack
+{
+	If Climax Genyou Yakou
+	{
+		PayCost 4 Discard 3 Any
+		{
+			Burn 7
+			Burn 7
+			Burn 7
+		}
+	}
+}
+Text Auto: CxCombo [(4) Discard 3 cards] When this attacks, if you have "Genyou Yakou" in your CX Area, you may pay cost. If you do, deal 7 damage to your opponent 3 times.
 EndCard
 
 Event: LHS/W122-096
