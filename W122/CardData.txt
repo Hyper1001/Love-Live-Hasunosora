@@ -407,7 +407,7 @@ Trait2 Mira-Cra Park!
 Auto: OnPlay
 {
 	Message Choose up to 1 <Mira-Cra Park!> character to put into the waiting room.
-	SearchLocationForTargets Deck 0 1 HasTrait Music
+	SearchLocationForTargets Deck 0 1 HasTrait Mira-Cra Park!
 	RevealTargets
 	MoveCards WaitingRoom
 	ShuffleLocation Deck
@@ -1479,7 +1479,7 @@ Name Dakishimeru Hanabira, Sayaka Murano
 Color R
 Level 2
 Cost 1
-Power 1000
+Power 5000
 Trigger Soul
 Trait1 Music
 Trait2 DOLLCHESTRA
@@ -1506,6 +1506,7 @@ Level 3
 Cost 2
 Power 8000
 Trigger Soul
+Soul 2
 Trait1 Music
 Trait2 Mira-Cra Park!
 Cont: InHand
@@ -2156,6 +2157,7 @@ Color B
 Level 3
 Cost 2
 Trigger Soul
+Soul 2
 Power 10500
 Trait1 Music
 Trait2 DOLLCHESTRA
@@ -2364,7 +2366,7 @@ Auto: OnClimaxPlay
 	If Climax Mirage Voyage
 	{
 		TargetLocation Stage
-		NarrowTargets HasTrait DOLLCHESTRA
+		NarrowTargets HasTrait Music
 		ChooseCardsFromTargets 0 1
 		GainEffect
 		{
