@@ -74,8 +74,8 @@ Name Dream Believers, Kaho Hinoshita
 Color Y
 Level 3
 Cost 2
-Power 9000
 Soul 2
+Power 9000
 Trigger Soul
 Trait1 Music
 Trait2 Cerise Bouquet
@@ -401,7 +401,7 @@ Name PASSION!!!!!!, Megumi Fujishima
 Color Y
 Level 0
 Cost 0
-Power 2500
+Power 500
 Trait1 Music
 Trait2 Mira-Cra Park!
 Auto: OnPlay
@@ -787,8 +787,8 @@ Name Spring breeze swing, Rurino Osawa
 Color Y
 Level 3
 Cost 2
-Trigger Soul
 Soul 2
+Trigger Soul
 Power 10000
 Trait1 Music
 Trait2 Mira-Cra Park!
@@ -890,9 +890,9 @@ Name Dream Believers, Megumi Fujishima
 Color R
 Level 3
 Cost 2
+Soul 2
 Power 10000
 Trigger Soul
-Soul 2
 Trait1 Music
 Trait2 Mira-Cra Park!
 Combo Do! Do! Do!
@@ -932,9 +932,9 @@ Name Dream Believers, Tsuzuri Yugiri
 Color R
 Level 3
 Cost 2
+Soul 2
 Power 10500
 Trigger Soul
-Soul 2
 Trait1 Music
 Trait2 DOLLCHESTRA
 Combo Tragic Drops
@@ -1124,6 +1124,7 @@ Name Setsubun -Allure-, Megumi Fujishima
 Color R
 Level 2
 Cost 2
+Soul 2
 Power 6500
 Trigger Soul
 Trait1 Music
@@ -1148,9 +1149,9 @@ Name Mira-Creation, Rurino Osawa
 Color R
 Level 2
 Cost 2
+Soul 2
 Power 8500
 Trigger Soul
-Soul 2
 Trait1 Music
 Trait2 Mira-Cra Park!
 Auto: StartAttackPhase
@@ -1407,7 +1408,7 @@ Color R
 Level 1
 Cost 1
 Trigger Soul
-Power 4000
+Power 3500
 Trait1 Music
 Trait2 Mira-Cra Park!
 Combo Hakuchuu à la Mode
@@ -1504,9 +1505,9 @@ Name Bloom the smile, Bloom the dream!, Hime Anyoji
 Color R
 Level 3
 Cost 2
+Soul 2
 Power 8000
 Trigger Soul
-Soul 2
 Trait1 Music
 Trait2 Mira-Cra Park!
 Cont: InHand
@@ -1942,9 +1943,9 @@ Name Dream Believers, Kosuzu Kachimachi
 Color B
 Level 3
 Cost 2
+Soul 2
 Power 8000
 Trigger Soul
-Soul 2
 Trait1 Music
 Trait2 DOLLCHESTRA
 *EarlyPlay4OrMore(Music)
@@ -2086,8 +2087,8 @@ Name Dolphin〰Beach, Kaho Hinoshita
 Color B
 Level 3
 Cost 2
-Trigger Soul
 Soul 2
+Trigger Soul
 Power 10000
 Trait1 Music
 Trait2 Cerise Bouquet
